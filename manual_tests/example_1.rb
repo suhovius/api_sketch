@@ -1,6 +1,6 @@
 require "api_sketch"
 
-endpoint "Update user profile" do
+resource "Update user profile" do
   description "Authenticated user could update his profile fields and password"
   path "/api/users/me"
   http_method "PUT"
@@ -12,24 +12,23 @@ endpoint "Update user profile" do
 
   parameters do
     object "user" do
+      description "user's parameters fields"
       required true
-      object do
-        string "email" do
-          description "user's email value"
-        end
-        string "password" do
-          description "user's profile password"
-        end
-        string "first_name" do
-          description "user's first name"
-        end
-        string "last_name" do
-          description "user's last name"
-        end
-        string "country_locode" do
-          example { ["US", "UA"].sample }
-          description "Country location code"
-        end
+      string "email" do
+        description "user's email value"
+      end
+      string "password" do
+        description "user's profile password"
+      end
+      string "first_name" do
+        description "user's first name"
+      end
+      string "last_name" do
+        description "user's last name"
+      end
+      string "country_locode" do
+        example { ["US", "UA"].sample }
+        description "Country location code"
       end
     end
   end
