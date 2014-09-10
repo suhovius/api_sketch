@@ -8,7 +8,7 @@ module ApiSketch::DSL
       other_attributes[k] = attributes.delete(k)
     end
 
-    res = ::ApiSketch::Resource.create(attributes)
+    res = ::ApiSketch::Model::Resource.create(attributes)
 
     # p other_attributes
 

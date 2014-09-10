@@ -1,4 +1,4 @@
-class ApiSketch::Base
+class ApiSketch::Model::Base
 
   attr_accessor :name, :description
 

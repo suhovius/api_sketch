@@ -1,0 +1,2 @@
+module ApiSketch::Model
+end

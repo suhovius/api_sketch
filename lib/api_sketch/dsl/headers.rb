@@ -11,7 +11,7 @@ class ApiSketch::DSL::Headers
   end
 
   def add(name, &block)
-    @list << ApiSketch::Header.new(::ApiSketch::AttributeParser.new(&block).parameters.merge(name: name))
+    @list << ::ApiSketch::Model::Header.new(::ApiSketch::AttributeParser.new(&block).parameters.merge(name: name))
   end
 
 end

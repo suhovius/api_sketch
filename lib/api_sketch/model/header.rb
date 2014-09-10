@@ -1,4 +1,4 @@
-class ApiSketch::Header < ApiSketch::Base
+class ApiSketch::Model::Header < ApiSketch::Model::Base
   attr_accessor :value, :example
 
   def example_value
