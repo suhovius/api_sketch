@@ -1,4 +1,4 @@
-class AttributeParser < Object
+class ApiSketch::AttributeParser
 
   attr_reader :parameters
 
@@ -9,7 +9,7 @@ class AttributeParser < Object
   end
 
   def method_missing(method_name, *argumets, &block)
-    @parameters[method_name] = argumets.first
+    @parameters[method_name] = argumets.first || block
   end
 
 end

@@ -1,3 +1,6 @@
 Resource
 Generator
 DSL
+
+
+Each element has it's own DSL class

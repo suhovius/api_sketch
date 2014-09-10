@@ -7,7 +7,11 @@ resource "Update user profile" do
   format "json"
 
   headers do
-    add "Authorization: Token token=:token_value", ":token_value - is an authorization token value"
+    add "Authorization" do
+      value "Token token=:token_value"
+      description ":token_value - is an authorization token value"
+      example { (:A..:z).to_a.shuffle[0,16].join }
+    end
   end
 
   parameters do

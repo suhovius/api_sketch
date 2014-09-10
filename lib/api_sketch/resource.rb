@@ -1,12 +1,13 @@
 class ApiSketch::Resource < ApiSketch::Base
 
-  attr_accessor :path, :http_method, :format, :hearders, :parameters, :response
-
+  attr_accessor :path, :http_method, :format, :headers, :parameters, :response
 
   class << self
 
     def create(attributes)
-      self.add(self.new(attributes))
+      res = self.new(attributes)
+      self.add(res)
+      res
     end
 
     def add(resource)
@@ -21,3 +22,4 @@ class ApiSketch::Resource < ApiSketch::Base
   end
 
 end
+

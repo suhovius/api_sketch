@@ -1,0 +1,17 @@
+class ApiSketch::DSL::Headers
+
+  def initialize(&block)
+    @list = []
+    define_singleton_method(:initialize_headers_list, block)
+    initialize_headers_list
+  end
+
+  def to_a
+    @list
+  end
+
+  def add(name, &block)
+    @list << ApiSketch::Header.new(::ApiSketch::AttributeParser.new(&block).parameters.merge(name: name))
+  end
+
+end
