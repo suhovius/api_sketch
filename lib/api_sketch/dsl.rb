@@ -22,7 +22,7 @@ module ApiSketch::DSL
 
   private
     def get_attrs(name, &block)
-      ::ApiSketch::AttributeParser.new(&block).parameters.merge(name: name)
+      ::ApiSketch::DSL::AttributeParser.new(&block).parameters.merge(name: name)
     end
 
     def get_headers(&block)

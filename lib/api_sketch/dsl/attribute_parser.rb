@@ -1,4 +1,4 @@
-class ApiSketch::AttributeParser
+class ApiSketch::DSL::AttributeParser
 
   attr_reader :parameters
 
