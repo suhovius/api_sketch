@@ -24,4 +24,18 @@ resource "Update user profile" do
       example true
     end
   end
+
+  parameters do
+    integer "page" do
+      description "page number"
+      required false
+      default 1
+    end
+
+    integer "per_page" do
+      description "items per page amount"
+      required false
+      default 25
+    end
+  end
 end

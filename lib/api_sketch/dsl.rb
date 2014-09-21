@@ -1,32 +1,33 @@
 module ApiSketch::DSL
 
+  COMPLEX_ATTRIBUTE_NAMES = [:headers, :parameters, :response]
+
   def resource(name, &block)
     attributes = get_attrs(name, &block)
 
-    other_attributes = {}
-    [:headers, :parameters, :response].each do |k|
-      other_attributes[k] = attributes.delete(k)
+    COMPLEX_ATTRIBUTE_NAMES.each do |attribute_name|
+      block_value = attributes[attribute_name]
+      attributes[attribute_name] = get_complex_attribute(attribute_name, &block_value) if block_value
     end
 
-    res = ::ApiSketch::Model::Resource.create(attributes)
-
-    # p other_attributes
-
-    if other_attributes[:headers]
-      res.headers = get_headers(&other_attributes[:headers])
-    end
-
-    res
+    ::ApiSketch::Model::Resource.create(attributes)
   end
 
 
   private
     def get_attrs(name, &block)
-      ::ApiSketch::DSL::AttributeParser.new(&block).parameters.merge(name: name)
+      ::ApiSketch::DSL::AttributeParser.new(&block).to_h.merge(name: name)
     end
 
-    def get_headers(&block)
-      ::ApiSketch::DSL::Headers.new(&block).to_a
+    def get_complex_attribute(attribute_name, &block)
+      case attribute_name
+      when :headers
+        ::ApiSketch::DSL::Headers.new(&block).to_a
+      when :parameters
+        ::ApiSketch::DSL::Parameters.new(&block).to_a
+      when :response
+        nil # TODO: This should be implemented
+      end
     end
 
 end
