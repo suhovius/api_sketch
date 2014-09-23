@@ -7,8 +7,8 @@ class ApiSketch::DSL::AttributeParser
     set_attributes_as_hash_value_format
   end
 
-  def method_missing(method_name, *argumets, &block)
-    @attribute_values[method_name] = argumets.first || block
+  def method_missing(method_name, *arguments, &block)
+    @attribute_values[method_name] = arguments.first || block
   end
 
   def to_h

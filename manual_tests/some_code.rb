@@ -60,42 +60,60 @@ resource "Update user profile" do
       example { Time.now.to_i }
     end
 
+    # array "place_ids" do
+    #   description "user's places ids"
+    #   required false
+    #   content do
+    #     integer do
+    #     end # ? What about documents
+    #     document do
+    #       string "test" do
+    #       end
+    #     end
+    #   end
+    # end
+
     document "user" do
       description "user's parameters fields"
       required true
-      string "email" do
-        description "user's email value"
-      end
-      string "password" do
-        description "user's profile password"
-      end
-      string "first_name" do
-        description "user's first name"
-      end
-      string "last_name" do
-        description "user's last name"
-      end
-      string "country_locode" do
-        example { ["US", "UA"].sample }
-        description "Country location code"
-      end
-
-      document "stats" do
-        timestamp "login_at" do
-          description "last login timestamp"
-          example { Time.now.to_i }
+      content do
+        string "email" do
+          description "user's email value"
+        end
+        string "password" do
+          description "user's profile password"
+        end
+        string "first_name" do
+          description "user's first name"
+        end
+        string "last_name" do
+          description "user's last name"
+        end
+        string "country_locode" do
+          example { ["US", "UA"].sample }
+          description "Country location code"
         end
 
-        integer "login_count" do
-          description "login count"
-          example { rand(10000) }
-        end
+        document "stats" do
+          content do
+            timestamp "login_at" do
+              description "last login timestamp"
+              example { Time.now.to_i }
+            end
 
-        string "rank" do
-          description "users rank"
-          example { ["Junior", "Middle", "Senior"].sample }
+            integer "login_count" do
+              description "login count"
+              example { rand(10000) }
+            end
+
+            string "rank" do
+              description "users rank"
+              example { ["Junior", "Middle", "Senior"].sample }
+            end
+          end
         end
       end
+
     end
   end
 end

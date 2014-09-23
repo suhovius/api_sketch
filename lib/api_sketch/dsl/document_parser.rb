@@ -1,11 +1,10 @@
 class ApiSketch::DSL::DocumentParser < ApiSketch::DSL::AttributeParser
 
-  def method_missing(method_name, *argumets, &block)
-    if ::ApiSketch::DSL::Parameters::TYPES.include?(method_name)
-      @attribute_values[:content] ||= []
-      @attribute_values[:content] << ApiSketch::DSL::Parameters.build_by(method_name, argumets.first, &block)
+  def method_missing(method_name, *arguments, &block)
+    if method_name == :content
+      @attribute_values[:content] = ApiSketch::DSL::Parameters.new(&block).to_a
     else
-      super(method_name, *argumets, &block)
+      super(method_name, *arguments, &block)
     end
   end
 

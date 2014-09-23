@@ -4,3 +4,8 @@ DSL
 
 
 Each element has it's own DSL class
+
+
+Add ablilty to create document without name
+
+Add array data_type
