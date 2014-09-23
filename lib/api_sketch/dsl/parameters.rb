@@ -1,6 +1,6 @@
 class ApiSketch::DSL::Parameters
 
-  TYPES = [:integer, :string, :float, :datetime, :timestamp, :document]
+  TYPES = [:integer, :string, :float, :datetime, :timestamp, :document, :array]
 
   def initialize(&block)
     @params = []
@@ -13,7 +13,8 @@ class ApiSketch::DSL::Parameters
   end
 
   TYPES.each do |type_name|
-    define_method(type_name) do |name, &block|
+    define_method(type_name) do |*args, &block|
+      name = args.first
       @params << self.class.build_by(type_name, name, &block)
     end
   end
@@ -21,8 +22,8 @@ class ApiSketch::DSL::Parameters
   class << self
     def build_by(data_type, attribute_name, &block)
       case data_type
-      when :document
-        ::ApiSketch::Model::Parameter.new(::ApiSketch::DSL::DocumentParser.new(&block).to_h.merge(data_type: :document, name: attribute_name))
+      when :document, :array
+        ::ApiSketch::Model::Parameter.new(::ApiSketch::DSL::DocumentParser.new(&block).to_h.merge(data_type: data_type, name: attribute_name))
       else
         ::ApiSketch::Model::Parameter.new(::ApiSketch::DSL::AttributeParser.new(&block).to_h.merge(data_type: data_type, name: attribute_name))
       end
