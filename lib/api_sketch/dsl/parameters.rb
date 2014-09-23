@@ -21,11 +21,13 @@ class ApiSketch::DSL::Parameters
 
   class << self
     def build_by(data_type, attribute_name, &block)
+      options = {data_type: data_type}
+      options[:name] = attribute_name if attribute_name
       case data_type
       when :document, :array
-        ::ApiSketch::Model::Parameter.new(::ApiSketch::DSL::DocumentParser.new(&block).to_h.merge(data_type: data_type, name: attribute_name))
+        ::ApiSketch::Model::Parameter.new(::ApiSketch::DSL::DocumentParser.new(&block).to_h.merge(options))
       else
-        ::ApiSketch::Model::Parameter.new(::ApiSketch::DSL::AttributeParser.new(&block).to_h.merge(data_type: data_type, name: attribute_name))
+        ::ApiSketch::Model::Parameter.new(::ApiSketch::DSL::AttributeParser.new(&block).to_h.merge(options))
       end
     end
   end
