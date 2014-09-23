@@ -15,7 +15,7 @@ resource "Update user profile" do
   end
 
   parameters do
-    object "user" do
+    document "user" do
       description "user's parameters fields"
       required true
       string "email" do
@@ -41,7 +41,7 @@ resource "Update user profile" do
     context "Success" do
       http_status :ok # 200
       body do
-        object do
+        document do
           integer "id" do
             description "User's ID"
           end
@@ -57,7 +57,7 @@ resource "Update user profile" do
           string "last_name" do
             description "user's last name"
           end
-          object "country" do
+          document "country" do
             string "name" do
               description "Country name"
             end
@@ -67,7 +67,7 @@ resource "Update user profile" do
             end
           end
           array "authentications" do
-            object do
+            document do
               string "uid" do
                 description "user's id at social network"
               end
@@ -81,7 +81,7 @@ resource "Update user profile" do
       end
     end
     context "Failure" do
-      
+
     end
   end
 
