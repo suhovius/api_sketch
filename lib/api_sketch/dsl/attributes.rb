@@ -25,7 +25,7 @@ class ApiSketch::DSL::Attributes
       options[:name] = attribute_name if attribute_name
       case data_type
       when :document, :array
-        ::ApiSketch::Model::Attribute.new(::ApiSketch::DSL::DocumentParser.new(&block).to_h.merge(options))
+        ::ApiSketch::Model::Attribute.new(::ApiSketch::DSL::ComplexAttributeParser.new(&block).to_h.merge(options))
       else
         ::ApiSketch::Model::Attribute.new(::ApiSketch::DSL::AttributeParser.new(&block).to_h.merge(options))
       end

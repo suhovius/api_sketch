@@ -1,4 +1,4 @@
-class ApiSketch::DSL::DocumentParser < ApiSketch::DSL::AttributeParser
+class ApiSketch::DSL::ComplexAttributeParser < ApiSketch::DSL::AttributeParser
 
   def method_missing(method_name, *arguments, &block)
     if method_name == :content

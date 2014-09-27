@@ -4,7 +4,7 @@ module ApiSketch
   require "api_sketch/model"
   require "api_sketch/generator"
   require "api_sketch/dsl/attribute_parser"
-  require "api_sketch/dsl/document_parser"
+  require "api_sketch/dsl/complex_attribute_parser"
   require "api_sketch/dsl/headers"
   require "api_sketch/dsl/attributes"
   require "api_sketch/model/base"

@@ -10,8 +10,8 @@ Each element has it's own DSL class
 
 Add array data_type
 
-Rename Parameters DSL to something common for request/response (maybe to ApiSketch::DSL::Attributes)
+Rename Parameters DSL to something common for request/response (maybe to ApiSketch::DSL::Attributes) +
 
-Rename DocumentParser to ComplexAttributeParser
+Rename DocumentParser to ComplexAttributeParser +
 
 Reuse ApiSketch::DSL::Attributes at response body
