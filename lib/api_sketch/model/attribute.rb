@@ -1,4 +1,4 @@
-class ApiSketch::Model::Parameter < ApiSketch::Model::Base
+class ApiSketch::Model::Attribute < ApiSketch::Model::Base
   attr_accessor :data_type, :value, :example, :required, :default, :content
 
   def example_value

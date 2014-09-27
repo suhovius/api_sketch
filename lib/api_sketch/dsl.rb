@@ -24,7 +24,7 @@ module ApiSketch::DSL
       when :headers
         ::ApiSketch::DSL::Headers.new(&block).to_a
       when :parameters
-        ::ApiSketch::DSL::Parameters.new(&block).to_a
+        ::ApiSketch::DSL::Attributes.new(&block).to_a
       when :response
         nil # TODO: This should be implemented
       end

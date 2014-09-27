@@ -1,11 +1,11 @@
-class ApiSketch::DSL::Parameters
+class ApiSketch::DSL::Attributes
 
   TYPES = [:integer, :string, :float, :datetime, :timestamp, :document, :array]
 
   def initialize(&block)
     @params = []
-    define_singleton_method(:initialize_parameters, block)
-    initialize_parameters
+    define_singleton_method(:initialize_attributes, block)
+    initialize_attributes
   end
 
   def to_a
@@ -25,9 +25,9 @@ class ApiSketch::DSL::Parameters
       options[:name] = attribute_name if attribute_name
       case data_type
       when :document, :array
-        ::ApiSketch::Model::Parameter.new(::ApiSketch::DSL::DocumentParser.new(&block).to_h.merge(options))
+        ::ApiSketch::Model::Attribute.new(::ApiSketch::DSL::DocumentParser.new(&block).to_h.merge(options))
       else
-        ::ApiSketch::Model::Parameter.new(::ApiSketch::DSL::AttributeParser.new(&block).to_h.merge(options))
+        ::ApiSketch::Model::Attribute.new(::ApiSketch::DSL::AttributeParser.new(&block).to_h.merge(options))
       end
     end
   end
