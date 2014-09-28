@@ -26,7 +26,7 @@ module ApiSketch::DSL
       when :parameters
         ::ApiSketch::DSL::Attributes.new(&block).to_a
       when :response
-        nil # TODO: This should be implemented
+        ::ApiSketch::DSL::Responses.new(&block).to_a
       end
     end
 

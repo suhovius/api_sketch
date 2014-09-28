@@ -14,4 +14,6 @@ Rename Parameters DSL to something common for request/response (maybe to ApiSket
 
 Rename DocumentParser to ComplexAttributeParser +
 
-Reuse ApiSketch::DSL::Attributes at response body
+Reuse ApiSketch::DSL::Attributes at response body +
+
+Add model validations: allowed types, values, etc
