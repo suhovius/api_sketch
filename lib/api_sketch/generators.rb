@@ -1,0 +1,2 @@
+module ApiSketch::Generators
+end
