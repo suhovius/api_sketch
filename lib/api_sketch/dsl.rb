@@ -1,6 +1,6 @@
 module ApiSketch::DSL
 
-  COMPLEX_ATTRIBUTE_NAMES = [:headers, :parameters, :response]
+  COMPLEX_ATTRIBUTE_NAMES = [:headers, :parameters, :responses]
 
   def resource(name, &block)
     attributes = get_attrs(name, &block)
@@ -24,8 +24,9 @@ module ApiSketch::DSL
       when :headers
         ::ApiSketch::DSL::Headers.new(&block).to_a
       when :parameters
-        ::ApiSketch::DSL::Attributes.new(&block).to_a
-      when :response
+        params = ::ApiSketch::DSL::Parameters.new(&block).to_h
+        ::ApiSketch::Model::Parameters.new(query: params[:query], body: params[:body])
+      when :responses
         ::ApiSketch::DSL::Responses.new(&block).to_a
       end
     end

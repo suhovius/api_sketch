@@ -1,6 +1,6 @@
 class ApiSketch::Model::Resource < ApiSketch::Model::Base
 
-  attr_accessor :path, :http_method, :format, :headers, :parameters, :response
+  attr_accessor :path, :http_method, :format, :headers, :parameters, :responses
 
   class << self
 

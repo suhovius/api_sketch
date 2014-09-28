@@ -17,3 +17,16 @@ Rename DocumentParser to ComplexAttributeParser +
 Reuse ApiSketch::DSL::Attributes at response body +
 
 Add model validations: allowed types, values, etc
+
+Add generator for some html site api documentation
+
+Add rack stabs test server
+
+
+Rename response to responses +
+
+Add params contexts (query, body). It should be keywords +
+
+Add reusable parts of documents, attributes, etc.
+
+Add simple generator for github wiki

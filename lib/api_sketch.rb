@@ -7,10 +7,12 @@ module ApiSketch
   require "api_sketch/dsl/complex_attribute_parser"
   require "api_sketch/dsl/headers"
   require "api_sketch/dsl/attributes"
+  require "api_sketch/dsl/parameters"
   require "api_sketch/dsl/responses"
   require "api_sketch/model/base"
   require "api_sketch/model/header"
   require "api_sketch/model/attribute"
+  require "api_sketch/model/parameters"
   require "api_sketch/model/resource"
   require "api_sketch/model/response"
 end
