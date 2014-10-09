@@ -54,8 +54,92 @@
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">Endpoint name should be here</h1>
-          <div>Here should be endpoint description</div>
+          <h1 class="page-header">Document Pattern</h1>
+          <div class="panel panel-default">
+            <div class="panel-body">Additional information about your API call. Try to use verbs that match both request type (fetching vs modifying) and plurality (one vs multiple).
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">URL</div>
+            <div class="panel-body">
+              The URL Structure (path only, no root url)
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">Method</div>
+            <div class="panel-body">GET | POST | DELETE | PUT</div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">Headers</div>
+            <table class="table">
+              <tr>
+                <th>Name</th>
+                <th>Value</th>
+                <th>Description</th>
+                <th>Required</th>
+              </tr>
+              <tr>
+                <td>Authorization:</td>
+                <td>Token token=:token_value</td>
+                <td>:token_value - is an authorization token value</td>
+                <td>Yes</td>
+              </tr>
+            </table>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">Url params</div>
+            <table class="table">
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Required</th>
+              </tr>
+              <tr>
+                <td>photo_id</td>
+                <td>integer</td>
+                <td>Photo ID number</td>
+                <td>Yes</td>
+              </tr>
+            </table>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">Data params</div>
+            <table class="table">
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Required</th>
+              </tr>
+              <tr>
+                <td>file</td>
+                <td>string</td>
+                <td>Photo ID number</td>
+                <td>Yes</td>
+              </tr>
+            </table>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">Responses</div>
+            <div class="panel-body">
+              <div class="panel panel-default">
+                <div class="panel-heading">Success</div>
+                <div class="panel-body">HTTP Status: 200</div>
+                <table class="table">
+                  <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                  <tr>
+                    <td>user[id]</td>
+                    <td>integer</td>
+                    <td>User's ID</td>
+                  </tr>
+                </table>
+              </div>
+          </div>
         </div>
       </div>
     </div>
