@@ -4,5 +4,5 @@ lib = File.expand_path('../../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "api_sketch"
 
-gen = ApiSketch::Generators::Base.new
+gen = ApiSketch::Generators::Bootstrap.new
 gen.generate!

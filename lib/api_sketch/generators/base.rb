@@ -2,10 +2,13 @@ class ApiSketch::Generators::Base
 
   attr_accessor :definitions_dir, :documentation_dir
 
+  attr_reader :templates_folder
+
   # TODO: Add here some validations for folders existance, etc
   def initialize(options = {})
     self.definitions_dir = options[:definitions_dir] || "definitions" # input data
     self.documentation_dir = options[:documentation_dir] || "documentation" # output data
+    @templates_folder = File.expand_path("../templates/#{self.class.name.split("::").last.downcase}", File.dirname(__FILE__))
   end
 
   def generate!

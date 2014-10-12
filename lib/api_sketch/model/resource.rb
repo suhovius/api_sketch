@@ -2,6 +2,12 @@ class ApiSketch::Model::Resource < ApiSketch::Model::Base
 
   attr_accessor :path, :http_method, :format, :headers, :parameters, :responses
 
+
+  # TODO: update this method to provide better id that is used as part of filename
+  def id
+    self.name.gsub(" ", "_")
+  end
+
   class << self
 
     def create(attributes)
