@@ -9,6 +9,7 @@ resource "Update user profile" do
       value "Token token=:token_value"
       description ":token_value - is an authorization token value"
       example { (:A..:z).to_a.shuffle[0,16].join }
+      required true
     end
 
     add "X-Test" do

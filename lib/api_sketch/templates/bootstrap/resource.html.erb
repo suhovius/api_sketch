@@ -78,48 +78,47 @@
                 <th>Description</th>
                 <th>Required</th>
               </tr>
-              <tr>
-                <td>Authorization:</td>
-                <td>Token token=:token_value</td>
-                <td>:token_value - is an authorization token value</td>
-                <td>Yes</td>
-              </tr>
+              <% @resource.headers.each do |header| %>
+                <tr>
+                  <td><%= header.name %>:</td>
+                  <td><%= header.value %></td>
+                  <td><%= header.description %></td>
+                  <td><%= header.required ? "Yes" : "No" %></td>
+                </tr>
+              <% end %>
             </table>
           </div>
-          <div class="panel panel-default">
-            <div class="panel-heading">Url params</div>
-            <table class="table">
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Description</th>
-                <th>Required</th>
-              </tr>
-              <tr>
-                <td>photo_id</td>
-                <td>integer</td>
-                <td>Photo ID number</td>
-                <td>Yes</td>
-              </tr>
-            </table>
-          </div>
-          <div class="panel panel-default">
-            <div class="panel-heading">Data params</div>
-            <table class="table">
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Description</th>
-                <th>Required</th>
-              </tr>
-              <tr>
-                <td>file</td>
-                <td>string</td>
-                <td>Photo ID number</td>
-                <td>Yes</td>
-              </tr>
-            </table>
-          </div>
+
+          <%
+            captions = ["Url params", "Data params"]
+            param_location = [:query, :body]
+          %>
+          <% param_location.each_with_index do |pl, index| %>
+            <div class="panel panel-default">
+              <div class="panel-heading"><%= captions[index] %></div>
+              <% if @resource.parameters && params = @resource.parameters.send(pl) %>
+                <table class="table">
+                  <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Required</th>
+                  </tr>
+                  <% params.each do |param| %>
+                    <tr>
+                      <td><%= param.name %></td>
+                      <td><%= param.data_type %></td>
+                      <td><%= param.description %></td>
+                      <td><%= param.required ? "Yes" : "No" %></td>
+                    </tr>
+                  <% end %>
+                </table>
+              <% else %>
+                <div class="panel-body">None</div>
+              <% end %>
+            </div>
+          <% end %>
+
           <div class="panel panel-default">
             <div class="panel-heading">Responses</div>
             <div class="panel-body">
