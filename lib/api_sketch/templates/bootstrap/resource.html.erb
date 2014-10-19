@@ -96,7 +96,7 @@
           <% param_location.each_with_index do |pl, index| %>
             <div class="panel panel-default">
               <div class="panel-heading"><%= captions[index] %></div>
-              <% if @resource.parameters && params = @resource.parameters.send(pl) %>
+              <% if @resource.parameters && params = @resource.parameters.as_full_names.send(pl) %>
                 <table class="table">
                   <tr>
                     <th>Name</th>
@@ -104,6 +104,7 @@
                     <th>Description</th>
                     <th>Required</th>
                   </tr>
+
                   <% params.each do |param| %>
                     <tr>
                       <td><%= param.name %></td>
