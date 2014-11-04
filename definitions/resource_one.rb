@@ -1,6 +1,6 @@
 resource "Update user profile" do
   description "Authenticated user could update his profile fields and password"
-  path "/api/users/me"
+  path "/api/users/me.json"
   http_method "PUT"
   format "json"
 
@@ -131,45 +131,48 @@ resource "Update user profile" do
   responses do
     context "Success" do
       http_status :ok # 200
-      body do
-        document do
-          content do
-            integer "id" do
-              description "User's ID"
-            end
-            string "email" do
-              description "user's email value"
-            end
-            string "password" do
-              description "user's profile password"
-            end
-            string "first_name" do
-              description "user's first name"
-            end
-            string "last_name" do
-              description "user's last name"
-            end
-            document "country" do
-              content do
-                string "name" do
-                  description "Country name"
-                end
-                string "id" do
-                  example :location_code
-                  description "Country ID (Location code)"
+
+      parameters do
+        body do
+          document do
+            content do
+              integer "id" do
+                description "User's ID"
+              end
+              string "email" do
+                description "user's email value"
+              end
+              string "password" do
+                description "user's profile password"
+              end
+              string "first_name" do
+                description "user's first name"
+              end
+              string "last_name" do
+                description "user's last name"
+              end
+              document "country" do
+                content do
+                  string "name" do
+                    description "Country name"
+                  end
+                  string "id" do
+                    example :location_code
+                    description "Country ID (Location code)"
+                  end
                 end
               end
-            end
-            array "authentications" do
-              content do
-                document do
-                  content do
-                    string "uid" do
-                      description "user's id at social network"
-                    end
-                    string "provider" do
-                      example { "facebook" }
-                      description "user's social network type"
+              array "authentications" do
+                content do
+                  document do
+                    content do
+                      string "uid" do
+                        description "user's id at social network"
+                      end
+                      string "provider" do
+                        example { "facebook" }
+                        description "user's social network type"
+                      end
                     end
                   end
                 end

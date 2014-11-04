@@ -59,6 +59,9 @@
             <div class="panel-body"><%= @resource.description %>
             </div>
           </div>
+
+          <h3>Request</h3>
+
           <div class="panel panel-default">
             <div class="panel-heading">URL</div>
             <div class="panel-body">
@@ -69,9 +72,15 @@
             <div class="panel-heading">Method</div>
             <div class="panel-body"><%= @resource.http_method %></div>
           </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading">Format</div>
+            <div class="panel-body"><%= @resource.format %></div>
+          </div>
+
           <div class="panel panel-default">
             <div class="panel-heading">Headers</div>
-            <table class="table">
+            <table class="table table-hover">
               <tr>
                 <th>Name</th>
                 <th>Value</th>
@@ -97,7 +106,7 @@
             <div class="panel panel-default">
               <div class="panel-heading"><%= captions[index] %></div>
               <% if @resource.parameters && params = @resource.parameters.as_full_names.send(pl) %>
-                <table class="table">
+                <table class="table table-hover">
                   <tr>
                     <th>Name</th>
                     <th>Type</th>
@@ -108,7 +117,7 @@
                   <% params.each do |param| %>
                     <tr>
                       <td><%= param.name %></td>
-                      <td><%= param.data_type %></td>
+                      <td><%= param.data_type_details %></td>
                       <td><%= param.description %></td>
                       <td><%= param.required ? "Yes" : "No" %></td>
                     </tr>
@@ -120,27 +129,53 @@
             </div>
           <% end %>
 
-          <div class="panel panel-default">
-            <div class="panel-heading">Responses</div>
-            <div class="panel-body">
+          <h3>Responses</h3>
+
+          <% @resource.responses.each do |response| %>
+            <div class="panel panel-default group">
               <div class="panel panel-default">
-                <div class="panel-heading">Success</div>
-                <div class="panel-body">HTTP Status: 200</div>
-                <table class="table">
-                  <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                  <tr>
-                    <td>user[id]</td>
-                    <td>integer</td>
-                    <td>User's ID</td>
-                  </tr>
-                </table>
+                <div class="panel-body"><%= response.name %></div>
               </div>
-          </div>
-        </div>
+
+              <div class="panel panel-default">
+                <div class="panel-heading">HTTP Status</div>
+                <div class="panel-body"><%= response.http_status %></div>
+              </div>
+
+              <div class="panel panel-default">
+                <div class="panel-heading">Format</div>
+                <div class="panel-body"><%= response.format %></div>
+              </div>
+
+              <%
+                captions = ["Url params", "Data params"]
+                param_location = [:query, :body]
+              %>
+              <% param_location.each_with_index do |pl, index| %>
+                <% params = response.parameters.as_full_names.send(pl) %>
+                <% unless params.empty? %>
+                  <div class="panel panel-default">
+                    <div class="panel-heading"><%= captions[index] %></div>
+                    <table class="table table-hover">
+                      <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                      </tr>
+
+                      <% params.each do |param| %>
+                        <tr>
+                          <td><%= param.name %></td>
+                          <td><%= param.data_type_details %></td>
+                          <td><%= param.description %></td>
+                        </tr>
+                      <% end %>
+                    </table>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
       </div>
     </div>
 

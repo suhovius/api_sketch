@@ -12,8 +12,9 @@ class ApiSketch::DSL::Responses
 
   def context(name, &block)
     attributes = ::ApiSketch::DSL::AttributeParser.new(&block).to_h
-    if attributes[:body]
-      attributes[:body] = ::ApiSketch::DSL::Attributes.new(&attributes[:body]).to_a
+    if attributes[:parameters]
+      params = ::ApiSketch::DSL::Parameters.new(&attributes[:parameters]).to_h
+      attributes[:parameters] = ::ApiSketch::Model::Parameters.new(query: params[:query], body: params[:body])
     end
     @list << ::ApiSketch::Model::Response.new(attributes.merge(name: name))
   end

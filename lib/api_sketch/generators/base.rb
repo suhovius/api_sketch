@@ -25,11 +25,7 @@ class ApiSketch::Generators::Base
     # TODO: This is unfinished sample file generator it should be more complex at some other generators
     #       Other generors should inherit from this class and implement this method
     def create_documentation_files
-      File.open("#{self.documentation_dir}/index.txt", "w+") do |file|
-        ApiSketch::Model::Resource.all.each do |resource|
-          file.puts(resource.name)
-        end
-      end
+      raise "This method should be implemented at child class who inherits from ApiSketch::Generators::Base"
     end
 
     def load_definitions

@@ -39,5 +39,16 @@ class ApiSketch::Model::Resource < ApiSketch::Model::Base
 
   end
 
+  private
+    def default_values_hash
+      {
+        http_method: "GET",
+        format: "json",
+        headers: [],
+        parameters: ::ApiSketch::Model::Parameters.new,
+        responses: []
+      }
+    end
+
 end
 

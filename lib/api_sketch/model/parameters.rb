@@ -25,6 +25,7 @@ class ApiSketch::Model::Parameters < ApiSketch::Model::Base
 
   private
     def full_names_for(param, name = "", new_params)
+      name = name.to_s # ensure that this value is always a string
       if param.content.kind_of?(Array)
         param.content.each do |attribute|
           renamed_attribute = attribute.clone

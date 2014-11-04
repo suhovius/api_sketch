@@ -1,6 +1,6 @@
 resource "Get user profile" do
   description "Authenticated user could get data from his profile"
-  path "/api/users/me"
+  path "/api/users/me.json"
   http_method "GET"
   format "json"
 
