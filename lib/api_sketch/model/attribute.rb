@@ -5,11 +5,22 @@ class ApiSketch::Model::Attribute < ApiSketch::Model::Base
     self.example.respond_to?(:call) ? self.example.call : self.example
   end
 
-  def data_type_details
-  	if self.data_type == :array
-  	  "#{self.data_type} of #{self.content.map(&:data_type).join(", ")}"
-  	else
-  	  self.data_type
-  	end
+  def to_hash
+    {
+      data_type: self.data_type,
+      example_value: self.example_value,
+      required: !!self.required,
+      default: self.default,
+      content: self.content_to_hash
+    }
   end
+
+  def content_to_hash
+    if self.content
+      self.content.map do |item|
+        item.to_hash
+      end
+    end
+  end
+
 end

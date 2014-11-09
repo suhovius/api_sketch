@@ -98,6 +98,38 @@
             </table>
           </div>
 
+
+          <div class="panel panel-default">
+            <div class="panel-heading">Url params as JSON</div>
+            <% if @resource.parameters && params = @resource.parameters.query %>
+              <%
+                placeholder_brackets = {
+                  array: ["[", "]"],
+                  document: ["{", "}"]
+                }
+              %>
+              <% placeholder_type = (params.count == 1 && params.first.data_type == :array) ? :array : :document %>
+
+              <div class="panel-body">
+                <%= placeholder_brackets[placeholder_type][0] %>
+                <% params.each_with_index do |param, index| %>
+                  <div class="indented-line">
+                    <%
+                      description = " //"
+                      description += (" " + param.description)
+                      description += "; <span class='required_field'> required</span>" if param.required
+                      description += "; default value: #{param.default}" if param.default
+                      description += "; example value: #{param.example_value}" if param.example_value
+                    %>
+                    <span class="field_name"><%= param.name %></span>: <span class="field_type"><%= param.data_type %></span><%= "," if index + 1 != params.size %><%= "<span class='field_details'>" + description + "</span>" if description != " //" %>
+
+                  </div>
+                <% end %>
+                <%= placeholder_brackets[placeholder_type][1] %>
+              </div>
+            <% end %>
+          </div>
+
           <%
             captions = ["Url params", "Data params"]
             param_location = [:query, :body]
@@ -117,7 +149,9 @@
                   <% params.each do |param| %>
                     <tr>
                       <td><%= param.name %></td>
-                      <td><%= param.data_type_details %></td>
+                      <td>
+                        <%= param.data_type %>
+                      </td>
                       <td><%= param.description %></td>
                       <td><%= param.required ? "Yes" : "No" %></td>
                     </tr>
@@ -166,7 +200,7 @@
                       <% params.each do |param| %>
                         <tr>
                           <td><%= param.name %></td>
-                          <td><%= param.data_type_details %></td>
+                          <td><%= param.data_type %></td>
                           <td><%= param.description %></td>
                         </tr>
                       <% end %>

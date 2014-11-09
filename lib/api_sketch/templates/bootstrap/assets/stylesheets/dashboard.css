@@ -107,3 +107,24 @@ body {
 .group {
   padding: 10px;
 }
+
+.indented-line {
+  margin-left: 1em;
+}
+
+.field_name {
+  color: #33CC66;
+}
+
+.field_type {
+  color: #3399FF;
+}
+
+.field_details {
+  color: #909090;
+}
+
+.required_field {
+  color: #CC3300;
+  font-weight: 700;
+}
