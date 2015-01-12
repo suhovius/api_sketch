@@ -56,14 +56,11 @@ module ApiSketch::Generators
       def create_documentation_files
         copy_assets
         @resources = ApiSketch::Model::Resource.all
-        File.open("#{self.documentation_dir}/index.txt", "w+") do |file|
-          @resources.each do |resource|
-            @resource = resource
-            filename = File.join(self.documentation_dir, "#{@resource.id}.html")
-
-            html_data = @resource_template.result(binding)
-            File.open(filename, 'w+') { |file| file.write(html_data) }
-          end
+        @resources.each do |resource|
+          @resource = resource
+          filename = File.join(self.documentation_dir, "#{@resource.id}.html")
+          html_data = @resource_template.result(binding)
+          File.open(filename, 'w+') { |file| file.write(html_data) }
         end
       end
   end

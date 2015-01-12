@@ -1,3 +1,47 @@
+<%
+
+  def render_content(items, placeholder_type)
+    placeholder_brackets = {
+      array: ["[", "]"],
+      document: ["{", "}"]
+    }
+
+    html_string = "<div class='indented-line'>"
+
+    html_string += placeholder_brackets[placeholder_type][0]
+    items.each_with_index do |param, index|
+      html_string += "<div class='indented-line'>"
+      description = ""
+      description += ("&nbsp;" + param.description) if param.description
+      description += "; <span class='required_field'> required</span>" if param.required
+      description += "; default value: #{param.default}" if param.default
+      description += "; example value: #{param.example_value}" if param.example_value
+
+      if [:array, :document].include?(param.data_type) && param.content
+        html_string += "<span class='field_name'>#{param.name}</span>:" unless param.name.to_s.empty?
+        html_string += "&nbsp;<span class='field_details'>" + "&nbsp;//&nbsp;" + "#{param.data_type}"
+        html_string += ",#{description}" unless description.empty?
+        html_string += "</span>"
+        html_string += render_content(param.content, param.data_type)
+        html_string += "," if (index + 1 != items.size)
+      else
+        html_string += "<span class='field_name'>#{param.name}</span>:" unless param.name.to_s.empty?
+        html_string += "&nbsp;<span class='field_type'>#{param.data_type}</span>"
+        html_string += "," if (index + 1 != items.size)
+        html_string += "<span class='field_details'>" + ("&nbsp;//" + description) + "</span>" if !description.empty?
+      end
+
+      html_string += "</div>"
+    end
+
+    html_string += placeholder_brackets[placeholder_type][1]
+    html_string += "</div>"
+
+  end
+
+%>
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -43,43 +87,6 @@
         </div>
       </div>
     </div>
-
-
-
-
-
-  <% render_content = lambda do |items, placeholder_type| %>
-
-    <%
-      placeholder_brackets = {
-        array: ["[", "]"],
-        document: ["{", "}"]
-      }
-    %>
-
-    <div class="indented-line">
-      <%= placeholder_brackets[placeholder_type][0] %>
-      <% items.each_with_index do |param, index| %>
-        <div class="indented-line">
-          <%
-            description = ""
-            description += (" " + param.description) if param.description
-            description += "; <span class='required_field'> required</span>" if param.required
-            description += "; default value: #{param.default}" if param.default
-            description += "; example value: #{param.example_value}" if param.example_value
-          %>
-          <% if [:array, :document].include?(param.data_type) && param.content %>
-            <%= "<span class='field_name'>#{param.name}</span>:" unless param.name.to_s.empty? %> <%= "<span class='field_details'>" + " //" + "<span class='field_type'>#{param.data_type}</span> " + description + "</span>" if !description.empty? %>
-            <%= render_content.call(param.content, param.data_type) %><%= "," if index + 1 != items.size %>
-          <% else %>
-            <%= "<span class='field_name'>#{param.name}</span>:" unless param.name.to_s.empty? %> <span class="field_type"><%= param.data_type %></span><%= "," if index + 1 != items.size %><%= "<span class='field_details'>" + (" //" + description) + "</span>" if !description.empty? %>
-          <% end %>
-        </div>
-      <% end %>
-      <%= placeholder_brackets[placeholder_type][1] %>
-    </div>
-
-  <% end %>
 
 
     <div class="container-fluid">
@@ -142,7 +149,7 @@
             <% if @resource.parameters && params = @resource.parameters.query %>
               <div class="panel-body">
                 <% placeholder_type = (params.count == 1 && params.first.data_type == :array) ? :array : :document %>
-                <%= render_content.call(params, placeholder_type) %>
+                <%= render_content(params, placeholder_type) %>
               </div>
             <% end %>
           </div>

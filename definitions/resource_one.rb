@@ -73,10 +73,20 @@ resource "Update user profile" do
             description "hello number"
           end
           document do
+            description "some useless data :)"
             content do
               string "test" do
                 description "test string"
               end
+              document "keys" do
+                content do
+                  integer "sum" do
+                  end
+                  string "details text" do
+                  end
+                end
+              end
+
             end
           end
         end
