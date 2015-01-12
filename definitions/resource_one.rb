@@ -72,6 +72,15 @@ resource "Update user profile" do
           integer do
             description "hello number"
           end
+          string do
+            description "more text here"
+          end
+          document do
+            content do
+              boolean "is_it_true" do
+              end
+            end
+          end
           document do
             description "some useless data :)"
             content do

@@ -24,7 +24,7 @@ module ApiSketch::DSL
 
   class Attributes
 
-    TYPES = [:integer, :string, :float, :datetime, :timestamp, :document, :array]
+    TYPES = [:integer, :string, :float, :boolean, :datetime, :timestamp, :document, :array]
 
     def initialize(&block)
       @params = []
