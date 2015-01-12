@@ -192,8 +192,22 @@ resource "Update user profile" do
         end
       end
     end
-    context "Failure" do
 
+    context "Failure" do
+      http_status :bad_request # 400
+
+      parameters do
+        body do
+          document "error" do
+            content do
+              string "message" do
+                description "Error description"
+                example { "Epic fail at your parameters" }
+              end
+            end
+          end
+        end
+      end
     end
   end
 end

@@ -143,17 +143,6 @@
             </table>
           </div>
 
-
-          <div class="panel panel-default">
-            <div class="panel-heading">Url params as JSON</div>
-            <% if @resource.parameters && params = @resource.parameters.query %>
-              <div class="panel-body">
-                <% placeholder_type = (params.count == 1 && params.first.data_type == :array) ? :array : :document %>
-                <%= render_content(params, placeholder_type) %>
-              </div>
-            <% end %>
-          </div>
-
           <%
             captions = ["Url params", "Data params"]
             param_location = [:query, :body]
@@ -161,26 +150,11 @@
           <% param_location.each_with_index do |pl, index| %>
             <div class="panel panel-default">
               <div class="panel-heading"><%= captions[index] %></div>
-              <% if @resource.parameters && params = @resource.parameters.as_full_names.send(pl) %>
-                <table class="table table-hover">
-                  <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                    <th>Required</th>
-                  </tr>
-
-                  <% params.each do |param| %>
-                    <tr>
-                      <td><%= param.name %></td>
-                      <td>
-                        <%= param.data_type %>
-                      </td>
-                      <td><%= param.description %></td>
-                      <td><%= param.required ? "Yes" : "No" %></td>
-                    </tr>
-                  <% end %>
-                </table>
+              <% if @resource.parameters && params = @resource.parameters.send(pl) %>
+                <div class="panel-body">
+                  <% placeholder_type = (params.count == 1 && params.first.data_type == :array) ? :array : :document %>
+                  <%= render_content(params, placeholder_type) %>
+                </div>
               <% else %>
                 <div class="panel-body">None</div>
               <% end %>
@@ -210,25 +184,14 @@
                 param_location = [:query, :body]
               %>
               <% param_location.each_with_index do |pl, index| %>
-                <% params = response.parameters.as_full_names.send(pl) %>
+                <% params = response.parameters.send(pl) %>
                 <% unless params.empty? %>
                   <div class="panel panel-default">
                     <div class="panel-heading"><%= captions[index] %></div>
-                    <table class="table table-hover">
-                      <tr>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Description</th>
-                      </tr>
-
-                      <% params.each do |param| %>
-                        <tr>
-                          <td><%= param.name %></td>
-                          <td><%= param.data_type %></td>
-                          <td><%= param.description %></td>
-                        </tr>
-                      <% end %>
-                    </table>
+                    <div class="panel-body">
+                      <% placeholder_type = (params.count == 1 && params.first.data_type == :array) ? :array : :document %>
+                      <%= render_content(params, placeholder_type) %>
+                    </div>
                   </div>
                 <% end %>
               <% end %>
