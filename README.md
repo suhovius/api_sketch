@@ -1,10 +1,8 @@
-# ApiSketch
+# Api Sketch
 
-TODO: Write a gem description
+api_sketch gem provides you with DSL to describe API documentation. Than API documentation could be generated from these definitions. In future this gem would provide API requests stubs.
 
 ## Installation
-
-Add this line to your application's Gemfile:
 
 ```ruby
 gem 'api_sketch'
