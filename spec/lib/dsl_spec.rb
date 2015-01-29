@@ -25,8 +25,19 @@ describe ApiSketch::DSL do
   	end
 
     context "when data doesn't have key name" do
-      it "should return error" do
+      before do
+        @invalid_block = lambda do
+          document do
+            content do
+              string do
+              end
+            end
+          end
+        end
+      end
 
+      it "should return error" do
+        expect { ApiSketch::DSL::Attributes.new(&@invalid_block) }.to raise_error(::ApiSketch::Error, "Key inside document should have name")
       end
     end
   end
