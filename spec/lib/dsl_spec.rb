@@ -15,7 +15,7 @@ describe ApiSketch::DSL do
       end
 
   		it "should successfully create objects" do
-        attributes = ApiSketch::DSL::Attributes.new(&@block).to_a
+        attributes = ApiSketch::DSL::Attributes.new(:array, &@block).to_a
         attribute = attributes.first
         expect(attribute.data_type).to eql :document
         string_key = attribute.content.first
@@ -37,7 +37,7 @@ describe ApiSketch::DSL do
       end
 
       it "should return error" do
-        expect { ApiSketch::DSL::Attributes.new(&@invalid_block) }.to raise_error(::ApiSketch::Error, "Key inside document should have name")
+        expect { ApiSketch::DSL::Attributes.new(:array, &@invalid_block) }.to raise_error(::ApiSketch::Error, "Key inside document should have name")
       end
     end
   end

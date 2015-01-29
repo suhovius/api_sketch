@@ -4,8 +4,9 @@ module ApiSketch::DSL
 
   class AttributeParser
 
-    def initialize(&block)
+    def initialize(container_type, &block)
       @attribute_values = {}
+      @container_type = container_type
       # INFO: Such long method name is used to ensure that we are would not have such value as key at hash
       define_singleton_method(:set_attributes_as_hash_value_format, block)
       set_attributes_as_hash_value_format
@@ -26,7 +27,8 @@ module ApiSketch::DSL
 
     TYPES = [:integer, :string, :float, :boolean, :datetime, :timestamp, :document, :array]
 
-    def initialize(&block)
+    def initialize(container_type, &block)
+      @container_type = container_type
       @params = []
       define_singleton_method(:initialize_attributes, block)
       initialize_attributes
@@ -39,6 +41,11 @@ module ApiSketch::DSL
     TYPES.each do |type_name|
       define_method(type_name) do |*args, &block|
         name = args.first
+         if @container_type == :document
+          if name.nil? || name.empty? # key name is not provided
+            raise ::ApiSketch::Error.new, "Key inside document should have name"
+          end
+        end
         @params << self.class.build_by(type_name, name, &block)
       end
     end
@@ -49,21 +56,20 @@ module ApiSketch::DSL
         options[:name] = attribute_name if attribute_name
         case data_type
         when :document, :array
-          ::ApiSketch::Model::Attribute.new(::ApiSketch::DSL::ComplexAttributeParser.new(&block).to_h.merge(options))
+          ::ApiSketch::Model::Attribute.new(::ApiSketch::DSL::ComplexAttributeParser.new(data_type, &block).to_h.merge(options))
         else
-          ::ApiSketch::Model::Attribute.new(::ApiSketch::DSL::AttributeParser.new(&block).to_h.merge(options))
+          ::ApiSketch::Model::Attribute.new(::ApiSketch::DSL::AttributeParser.new(data_type, &block).to_h.merge(options))
         end
       end
     end
 
   end
 
-
   class ComplexAttributeParser < ApiSketch::DSL::AttributeParser
 
     def method_missing(method_name, *arguments, &block)
       if method_name == :content
-        @attribute_values[:content] = ApiSketch::DSL::Attributes.new(&block).to_a
+        @attribute_values[:content] = ApiSketch::DSL::Attributes.new(@container_type, &block).to_a
       else
         super(method_name, *arguments, &block)
       end
@@ -85,7 +91,7 @@ module ApiSketch::DSL
     end
 
     def add(name, &block)
-      @list << ::ApiSketch::Model::Header.new(::ApiSketch::DSL::AttributeParser.new(&block).to_h.merge(name: name))
+      @list << ::ApiSketch::Model::Header.new(::ApiSketch::DSL::AttributeParser.new(:document, &block).to_h.merge(name: name))
     end
 
   end
