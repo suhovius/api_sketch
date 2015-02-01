@@ -41,9 +41,13 @@ module ApiSketch::DSL
     TYPES.each do |type_name|
       define_method(type_name) do |*args, &block|
         name = args.first
-         if @container_type == :document
+        if @container_type == :document
           if name.nil? || name.empty? # key name is not provided
             raise ::ApiSketch::Error.new, "Key inside document should have name"
+          end
+        elsif @container_type == :array
+          if (!name.nil? && !name.empty?) # key name is provided
+            raise ::ApiSketch::Error.new, "Array element can't have name"
           end
         end
         @params << self.class.build_by(type_name, name, &block)
