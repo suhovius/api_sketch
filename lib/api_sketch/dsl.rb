@@ -117,11 +117,11 @@ module ApiSketch::DSL
     end
 
     def query(&block)
-      @query += ::ApiSketch::DSL::Attributes.new(&block).to_a
+      @query += ::ApiSketch::DSL::Attributes.new(:root, &block).to_a
     end
 
     def body(&block)
-      @body += ::ApiSketch::DSL::Attributes.new(&block).to_a
+      @body += ::ApiSketch::DSL::Attributes.new(:root, &block).to_a
     end
 
   end
@@ -139,7 +139,7 @@ module ApiSketch::DSL
     end
 
     def context(name, &block)
-      attributes = ::ApiSketch::DSL::AttributeParser.new(&block).to_h
+      attributes = ::ApiSketch::DSL::AttributeParser.new(:root, &block).to_h
       if attributes[:parameters]
         params = ::ApiSketch::DSL::Parameters.new(&attributes[:parameters]).to_h
         attributes[:parameters] = ::ApiSketch::Model::Parameters.new(query: params[:query], body: params[:body])
@@ -163,7 +163,7 @@ module ApiSketch::DSL
 
   private
     def get_attrs(name, &block)
-      ::ApiSketch::DSL::AttributeParser.new(&block).to_h.merge(name: name)
+      ::ApiSketch::DSL::AttributeParser.new(:root, &block).to_h.merge(name: name)
     end
 
     def get_complex_attribute(attribute_name, &block)
