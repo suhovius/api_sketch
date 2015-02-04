@@ -86,9 +86,9 @@ describe ApiSketch::DSL do
   context "resource" do
     before do
       @block = Proc.new do
-        resource "Update user profile" do
-          description "Authenticated user could update his profile fields and password"
-          path "/api/users/me.json"
+        resource "API endpoint name" do
+          description "API endpoint description"
+          path "/api/endpoint/link.json"
           http_method "PUT"
           format "json"
 
@@ -96,7 +96,7 @@ describe ApiSketch::DSL do
             add "Authorization" do
               value "Token token=:token_value"
               description ":token_value - is an authorization token value"
-              example { (:A..:z).to_a.shuffle[0,16].join }
+              example { "some_data_#{Time.now.hour}" }
               required true
             end
 
@@ -309,15 +309,37 @@ describe ApiSketch::DSL do
           end
         end
       end
-    end
 
-    it "should successfully create correct objects structure" do
       class TestEvaluator
         include ApiSketch::DSL
       end
 
       TestEvaluator.new.instance_eval(&@block)
-      resource = ApiSketch::Model::Resource.all.find { |r| r.name == "Update user profile" }
+      @resource = ApiSketch::Model::Resource.all.find { |r| r.name == "API endpoint name" }
+    end
+
+    it "should successfully create correct resource object" do
+      expect(@resource.name).to eql "API endpoint name"
+      expect(@resource.description).to eql "API endpoint description"
+      expect(@resource.path).to eql "/api/endpoint/link.json"
+      expect(@resource.http_method).to eql "PUT"
+      expect(@resource.format).to eql "json"
+    end
+
+    it "should set proper request headers" do
+      headers = @resource.headers
+      expect(headers[0].name).to eql "Authorization"
+      expect(headers[0].value).to eql "Token token=:token_value"
+      expect(headers[0].description).to eql ":token_value - is an authorization token value"
+      expect(headers[0].example).to be_instance_of(Proc)
+      expect(headers[0].example_value).to eql "some_data_#{Time.now.hour}"
+      expect(headers[0].required).to be true
+
+      expect(headers[1].name).to eql "X-Test"
+      expect(headers[1].value).to eql "Test=:perform_test"
+      expect(headers[1].description).to eql ":perform_test - test boolean value"
+      expect(headers[1].example).to eql true
+      expect(!!headers[1].required).to eql false # Here this value is nil
     end
   end
 end
