@@ -109,26 +109,10 @@ describe ApiSketch::DSL do
 
           parameters do
             query do
-              string "hello_message" do
-                description "some message"
-              end
-
-              integer "repeat_times" do
-                description "times to repeat hello message"
-              end
-            end
-
-            query do
               integer "page" do
                 description "page number"
                 required false
                 default 1
-              end
-
-              integer "per_page" do
-                description "items per page amount"
-                required false
-                default 25
               end
 
               string "name" do
@@ -169,23 +153,6 @@ describe ApiSketch::DSL do
                       end
                     end
                   end
-                  document do
-                    description "some useless data :)"
-                    content do
-                      string "test" do
-                        description "test string"
-                      end
-                      document "keys" do
-                        content do
-                          integer "sum" do
-                          end
-                          string "details text" do
-                          end
-                        end
-                      end
-
-                    end
-                  end
                 end
               end
             end
@@ -198,19 +165,6 @@ describe ApiSketch::DSL do
                   string "email" do
                     description "user's email value"
                   end
-                  string "password" do
-                    description "user's profile password"
-                  end
-                  string "first_name" do
-                    description "user's first name"
-                  end
-                  string "last_name" do
-                    description "user's last name"
-                  end
-                  string "country_locode" do
-                    example { ["US", "UA"].sample }
-                    description "Country location code"
-                  end
 
                   document "stats" do
                     content do
@@ -221,12 +175,7 @@ describe ApiSketch::DSL do
 
                       integer "login_count" do
                         description "login count"
-                        example { rand(10000) }
-                      end
-
-                      string "rank" do
-                        description "users rank"
-                        example { ["Junior", "Middle", "Senior"].sample }
+                        example { 1000 + Time.now.hour }
                       end
                     end
                   end
@@ -252,12 +201,7 @@ describe ApiSketch::DSL do
                       string "password" do
                         description "user's profile password"
                       end
-                      string "first_name" do
-                        description "user's first name"
-                      end
-                      string "last_name" do
-                        description "user's last name"
-                      end
+
                       document "country" do
                         content do
                           string "name" do
@@ -339,7 +283,28 @@ describe ApiSketch::DSL do
       expect(headers[1].value).to eql "Test=:perform_test"
       expect(headers[1].description).to eql ":perform_test - test boolean value"
       expect(headers[1].example).to eql true
-      expect(!!headers[1].required).to eql false # Here this value is nil
+      expect(!!headers[1].required).to eql false # Here this value is nil actually
+    end
+
+    it "should set proper request parameters" do
+      query = @resource.parameters.query
+
+      expect(query[0].name).to eql "page"
+      expect(query[0].data_type).to eql :integer
+      expect(query[0].description).to eql "page number"
+      expect(!!query[0].required).to eql false
+      expect(query[0].default).to eql 1
+
+      expect(query[1].name).to eql "name"
+      expect(query[1].data_type).to eql :string
+      expect(query[1].description).to eql "place name"
+      expect(query[1].required).to eql true
+
+      expect(query[2].name).to eql "range"
+      expect(query[2].data_type).to eql :float
+      expect(query[2].description).to eql "search range in km"
+      expect(!!query[2].required).to eql false
+      expect(query[2].example_value).to be_instance_of(Float)
     end
   end
 end
