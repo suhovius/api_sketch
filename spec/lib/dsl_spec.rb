@@ -129,12 +129,12 @@ describe ApiSketch::DSL do
               datetime "start_at" do
                 description "start at datetime"
                 required false
-                example { Time.now.to_s }
+                example { Time.at(1423179337).to_s }
               end
 
               timestamp "seconds" do
                 description "seconds today"
-                example { Time.now.to_i }
+                example { 1423179342 }
               end
 
               array "place_ids" do
@@ -303,8 +303,31 @@ describe ApiSketch::DSL do
       expect(query[2].name).to eql "range"
       expect(query[2].data_type).to eql :float
       expect(query[2].description).to eql "search range in km"
-      expect(!!query[2].required).to eql false
       expect(query[2].example_value).to be_instance_of(Float)
+
+      expect(query[3].name).to eql "start_at"
+      expect(query[3].data_type).to eql :datetime
+      expect(query[3].description).to eql "start at datetime"
+      expect(query[3].example_value).to eql Time.at(1423179337).to_s
+
+      expect(query[4].name).to eql "seconds"
+      expect(query[4].data_type).to eql :timestamp
+      expect(query[4].description).to eql "seconds today"
+      expect(query[4].example_value).to eql 1423179342
+
+      expect(query[5].name).to eql "place_ids"
+      expect(query[5].data_type).to eql :array
+      expect(query[5].description).to eql "user's places ids"
+
+      array_content = query[5].content
+      expect(array_content[0].description).to eql "hello number"
+      expect(array_content[0].data_type).to eql :integer
+      expect(array_content[1].description).to eql "more text here"
+      expect(array_content[1].data_type).to eql :string
+      document = array_content[2]
+      expect(document.data_type).to eql :document
+      expect(document.content[0].name).to eql "is_it_true"
+      expect(document.content[0].data_type).to eql :boolean
     end
   end
 end
