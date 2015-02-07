@@ -169,13 +169,9 @@ describe ApiSketch::DSL do
                   document "stats" do
                     content do
                       timestamp "login_at" do
-                        description "last login timestamp"
-                        example { Time.now.to_i }
                       end
 
                       integer "login_count" do
-                        description "login count"
-                        example { 1000 + Time.now.hour }
                       end
                     end
                   end
@@ -329,5 +325,27 @@ describe ApiSketch::DSL do
       expect(document.content[0].name).to eql "is_it_true"
       expect(document.content[0].data_type).to eql :boolean
     end
+
+    it "should set proper body parameters" do
+      body = @resource.parameters.body
+      expect(body[0].data_type).to eql :document
+      expect(body[0].name).to eql "user"
+      expect(body[0].description).to eql "user's parameters fields"
+      expect(body[0].required).to eql true
+
+      document_content = body[0].content
+      expect(document_content[0].data_type).to eql :string
+      expect(document_content[0].name).to eql "email"
+      expect(document_content[0].description).to eql "user's email value"
+      expect(document_content[1].data_type).to eql :document
+      expect(document_content[1].name).to eql "stats"
+
+      inner_content = document_content[1].content
+      expect(inner_content[0].name).to eql "login_at"
+      expect(inner_content[0].data_type).to eql :timestamp
+      expect(inner_content[1].name).to eql "login_count"
+      expect(inner_content[1].data_type).to eql :integer
+    end
+
   end
 end
