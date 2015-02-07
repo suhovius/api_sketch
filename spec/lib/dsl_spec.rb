@@ -188,41 +188,8 @@ describe ApiSketch::DSL do
                 body do
                   document do
                     content do
-                      integer "id" do
-                        description "User's ID"
-                      end
                       string "email" do
                         description "user's email value"
-                      end
-                      string "password" do
-                        description "user's profile password"
-                      end
-
-                      document "country" do
-                        content do
-                          string "name" do
-                            description "Country name"
-                          end
-                          string "id" do
-                            example :location_code
-                            description "Country ID (Location code)"
-                          end
-                        end
-                      end
-                      array "authentications" do
-                        content do
-                          document do
-                            content do
-                              string "uid" do
-                                description "user's id at social network"
-                              end
-                              string "provider" do
-                                example { "facebook" }
-                                description "user's social network type"
-                              end
-                            end
-                          end
-                        end
                       end
                     end
                   end
@@ -345,6 +312,31 @@ describe ApiSketch::DSL do
       expect(inner_content[0].data_type).to eql :timestamp
       expect(inner_content[1].name).to eql "login_count"
       expect(inner_content[1].data_type).to eql :integer
+    end
+
+    it "should set proper responses" do
+      responses = @resource.responses
+      # Success
+      expect(responses[0].format).to eql "json"
+      expect(responses[0].headers).to eql []
+      expect(responses[0].http_status).to eql :ok
+      expect(responses[0].name).to eql "Success"
+      expect(responses[0].parameters.body[0].data_type).to eql :document
+      document_content = responses[0].parameters.body[0].content
+      expect(document_content[0].name).to eql "email"
+      expect(document_content[0].description).to eql "user's email value"
+      expect(document_content[0].data_type).to eql :string
+      # Bad request
+      expect(responses[1].format).to eql "json"
+      expect(responses[1].headers).to eql []
+      expect(responses[1].http_status).to eql :bad_request
+      expect(responses[1].name).to eql "Failure"
+      expect(responses[1].parameters.body[0].name).to eql "error"
+      expect(responses[1].parameters.body[0].data_type).to eql :document
+      expect(responses[1].parameters.body[0].content[0].name).to eql "message"
+      expect(responses[1].parameters.body[0].content[0].description).to eql "Error description"
+      expect(responses[1].parameters.body[0].content[0].data_type).to eql :string
+      expect(responses[1].parameters.body[0].content[0].example_value).to eql "Epic fail at your parameters"
     end
 
   end
