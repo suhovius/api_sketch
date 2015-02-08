@@ -167,4 +167,18 @@ module ApiSketch::Model
       end
   end
 
+  module SharedBlock
+    @list_hash = {}
+
+    class << self
+      def add(name, block)
+        @list_hash[name] = block
+      end
+
+      def find(name)
+        @list_hash[name] || raise(::ApiSketch::Error, "Shared block '#{name}' is not defined")
+      end
+    end
+  end
+
 end

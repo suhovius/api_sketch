@@ -340,4 +340,85 @@ describe ApiSketch::DSL do
     end
 
   end
+
+  context "shared_block" do
+    before do
+      class TestEvaluator
+        include ApiSketch::DSL
+      end
+    end
+
+    context "definition" do
+      before do
+        definition = Proc.new do
+          string "username" do
+            description "unique user name"
+          end
+          integer "age" do
+          end
+        end
+
+        @definition_block = definition
+
+        @shared_block = Proc.new do
+          shared_block("short user data", definition)
+        end
+      end
+
+      it "should define and save shared_block code into predefined storage" do
+        TestEvaluator.new.instance_eval(&@shared_block)
+
+        expect(ApiSketch::Model::SharedBlock.find("short user data")).to eql @definition_block
+      end
+
+      context "when this block is predefined" do
+        before do
+          @block = lambda do
+            document do
+              content do
+                string "test_key" do
+                end
+
+                shared "short user data"
+              end
+            end
+          end
+        end
+
+        it "should call this block and put it's data in the definition" do
+          attributes = ApiSketch::DSL::Attributes.new(:array, &@block).to_a
+          attribute = attributes.first
+          expect(attribute.data_type).to eql :document
+          string_key = attribute.content.first
+          expect(string_key.data_type).to eql :string
+          expect(string_key.name).to eql "test_key"
+
+          expect(attribute.content[1].name).to eql "username"
+          expect(attribute.content[1].data_type).to eql :string
+          expect(attribute.content[2].name).to eql "age"
+          expect(attribute.content[2].data_type).to eql :integer
+        end
+      end
+
+      context "when this block is not defined" do
+        before do
+          @invalid_block = lambda do
+            document do
+              content do
+                string "test_key" do
+                end
+
+                shared "non existing shared data"
+              end
+            end
+          end
+        end
+
+        it "should raise error" do
+          expect { ApiSketch::Model::SharedBlock.find("non existing shared data") }.to raise_error(::ApiSketch::Error, "Shared block 'non existing shared data' is not defined")
+        end
+      end
+
+    end
+  end
 end

@@ -38,6 +38,10 @@ module ApiSketch::DSL
       @params
     end
 
+    def shared(name)
+      self.instance_eval(&::ApiSketch::Model::SharedBlock.find(name))
+    end
+
     TYPES.each do |type_name|
       define_method(type_name) do |*args, &block|
         name = args.first
@@ -147,6 +151,10 @@ module ApiSketch::DSL
       @list << ::ApiSketch::Model::Response.new(attributes.merge(name: name))
     end
 
+  end
+
+  def shared_block(name, block)
+    ::ApiSketch::Model::SharedBlock.add(name, block)
   end
 
   def resource(name, &block)
