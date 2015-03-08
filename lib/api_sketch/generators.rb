@@ -14,13 +14,18 @@ module ApiSketch::Generators
 	  end
 
 	  def generate!
+      puts_info("Load definitions")
 	    load_definitions
+      puts_info("Create documentation directory")
+      puts_info("\tpath: #{self.documentation_dir}")
 	    create_documentation_directory
+      puts_info("Create documentation files")
 	    create_documentation_files
 	  end
 
 	  private
 	    def create_documentation_directory
+        FileUtils.rm_r(self.documentation_dir, :force => true)
 	      FileUtils.mkdir_p(self.documentation_dir)
 	    end
 
@@ -60,6 +65,7 @@ module ApiSketch::Generators
           @resource = resource
           filename = File.join(self.documentation_dir, "#{@resource.id}.html")
           html_data = @resource_template.result(binding)
+          puts_info("\twrite: #{filename}")
           File.open(filename, 'w+') { |file| file.write(html_data) }
         end
       end

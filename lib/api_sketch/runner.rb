@@ -36,6 +36,12 @@ class ApiSketch::Runner
     :description  => 'Run api stubs server (This option is under developent)',
     :boolean      => true
 
+  option :debug,
+    :short        => '-d',
+    :long         => '--debug',
+    :description  => 'Run in verbose mode',
+    :boolean      => true
+
   option :version,
     :short        => '-v',
     :long         => '--version',
@@ -46,6 +52,8 @@ class ApiSketch::Runner
 
   def run
     parse_options
+    ::ApiSketch::Config.merge!(config)
+
     if config[:generate]
       raise ApiSketch::Error, "Definitions parameter should be a directory" unless File.directory?(config[:definitions_dir])
       ApiSketch::Generators::Bootstrap.new(config).generate!
