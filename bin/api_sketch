@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH << FILE.join(File.dirname(__FILE__), '..', 'lib')
+
+require 'rubygems'
+require 'api_sketch'
+
+ApiSketch::Runner.new.run
