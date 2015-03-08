@@ -101,7 +101,7 @@ module ApiSketch::Model
 
   class Resource < ApiSketch::Model::Base
 
-    attr_accessor :path, :http_method, :format, :headers, :parameters, :responses
+    attr_accessor :group, :path, :http_method, :format, :headers, :parameters, :responses
 
 
     # TODO: update this method to provide better id that is used as part of filename

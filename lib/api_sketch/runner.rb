@@ -21,7 +21,7 @@ class ApiSketch::Runner
   option :documentation_dir,
     :short        => '-o DOCUMENTATION',
     :long         => '--output DOCUMENTATION',
-    :description  => 'Path to the folder where generated documentation should be saved (Defult is documentation folder in curren folder)',
+    :description  => "Path to the folder where generated documentation should be saved (Default is 'documentation' folder in current folder)",
     :default      => 'documentation'
 
   option :generate,
