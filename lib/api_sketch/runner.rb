@@ -1,3 +1,5 @@
+require 'mixlib/cli'
+
 class ApiSketch::Runner
   include Mixlib::CLI
 
@@ -19,9 +21,8 @@ class ApiSketch::Runner
   option :documentation_dir,
     :short        => '-o DOCUMENTATION',
     :long         => '--output DOCUMENTATION',
-    :description  => 'Path to the folder where generated documentation should be saved',
+    :description  => 'Path to the folder where generated documentation should be saved (Defult is documentation folder in curren folder)',
     :default      => 'documentation'
-    :required     => false,
 
   option :generate,
     :short        => '-g',
