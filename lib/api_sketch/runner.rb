@@ -13,8 +13,8 @@ class ApiSketch::Runner
     :exit         => 0
 
   option :definitions_dir,
-    :short        => '-i DEFINTIONS',
-    :long        => '--input DEFINTIONS',
+    :short        => '-i DEFINITIONS',
+    :long        => '--input DEFINITIONS',
     :description  => 'Path to the folder with api definitions',
     :required     => true
 
