@@ -112,6 +112,7 @@ module ApiSketch::Model
 
       def create(attributes)
         res = self.new(attributes)
+        res.send(:run_validations!)
         self.add(res)
         res
       end
@@ -123,6 +124,10 @@ module ApiSketch::Model
 
       def all
         @resources ||= []
+      end
+
+      def find(id)
+        self.all.find { |res| res.id == id }
       end
 
       def first
@@ -148,6 +153,20 @@ module ApiSketch::Model
           parameters: ::ApiSketch::Model::Parameters.new,
           responses: []
         }
+      end
+
+      def run_validations!
+        unless self.action =~ /\A\w*\z/
+          message = "'#{self.action}' is invalid action value"
+          # puts_error(message)
+          raise ::ApiSketch::Error, message
+        end
+
+        if self.class.find(self.id)
+          message =  "'#{self.id}' is not unique id. Change values of 'namespace' and/or 'action' attributes"
+          # puts_error(message)
+          raise ::ApiSketch::Error, message
+        end
       end
 
   end
