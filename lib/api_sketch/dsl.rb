@@ -165,6 +165,9 @@ module ApiSketch::DSL
       attributes[attribute_name] = get_complex_attribute(attribute_name, &block_value) if block_value
     end
 
+    # Assign resource group
+    attributes[:group] ||= block.source_location[0].gsub(ApiSketch::Config[:definitions_dir], "").gsub(".rb", "").split("/").reject { |g| g.nil? || g == "" }
+
     ::ApiSketch::Model::Resource.create(attributes)
   end
 

@@ -7,8 +7,8 @@ class ApiSketch::DataLoadContainer
 
   def init!
     Dir.glob("#{@definitions_dir}/**/*.rb").each do |file_path|
-      puts_info("\tread: #{file_path}")
-      eval(File.read(file_path))
+      puts_info("\t read: #{file_path}")
+      binding.eval(File.open(File.expand_path(file_path)).read, file_path)
     end
   end
 end

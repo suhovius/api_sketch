@@ -17,7 +17,7 @@ module ApiSketch::Generators
       puts_info("Load definitions")
 	    load_definitions
       puts_info("Create documentation directory")
-      puts_info("\tpath: #{self.documentation_dir}")
+      puts_info("\t path: #{self.documentation_dir}")
 	    create_documentation_directory
       puts_info("Create documentation files")
 	    create_documentation_files
@@ -65,7 +65,7 @@ module ApiSketch::Generators
           @resource = resource
           filename = File.join(self.documentation_dir, "#{@resource.id}.html")
           html_data = @resource_template.result(binding)
-          puts_info("\twrite: #{filename}")
+          puts_info("\t write: #{filename}")
           File.open(filename, 'w+') { |file| file.write(html_data) }
         end
       end
