@@ -52,7 +52,7 @@ module ApiSketch::Generators
 
     # This is defined here because it is related for this type of generator only
     def filename_for(resource)
-      resource.id.gsub("/", "_") + '.html'
+      resource.id + '.html'
     end
 
     private

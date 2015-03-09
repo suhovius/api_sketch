@@ -41,6 +41,10 @@
 
 %>
 
+<%
+  # Relative reference urls nesting
+  nesting_path_prefix = "./" + "../" * File.dirname(@generator.filename_for(resource)).split("/").count
+%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -50,15 +54,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="./assets/images/favicon.ico">
+    <link rel="icon" href="<%= nesting_path_prefix %>assets/images/favicon.ico">
 
     <title>Project name here</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="./assets/stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="<%= nesting_path_prefix %>assets/stylesheets/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="./assets/stylesheets/dashboard.css" rel="stylesheet">
+    <link href="<%= nesting_path_prefix %>assets/stylesheets/dashboard.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -94,7 +98,7 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <% @resources.each do |resource| %>
-              <li class="<%= 'active' if resource.id == @resource.id %>"><a href="<%= @generator.filename_for(resource) %>"><%= resource.name %></a></li>
+              <li class="<%= 'active' if resource.id == @resource.id %>"><a href="<%= nesting_path_prefix %><%= @generator.filename_for(resource) %>"><%= resource.name %></a></li>
             <% end %>
           </ul>
         </div>
@@ -204,10 +208,10 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="./assets/javascripts/jquery-1.11.1/jquery.min.js"></script>
-    <script src="./assets/javascripts/bootstrap.min.js"></script>
-    <script src="./assets/javascripts/docs.min.js"></script>
+    <script src="<%= nesting_path_prefix %>assets/javascripts/jquery-1.11.1/jquery.min.js"></script>
+    <script src="<%= nesting_path_prefix %>assets/javascripts/bootstrap.min.js"></script>
+    <script src="<%= nesting_path_prefix %>assets/javascripts/docs.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="./assets/javascripts/ie10-viewport-bug-workaround.js"></script>
+    <script src="<%= nesting_path_prefix %>assets/javascripts/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>
