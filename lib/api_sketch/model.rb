@@ -101,12 +101,11 @@ module ApiSketch::Model
 
   class Resource < ApiSketch::Model::Base
 
-    attr_accessor :group, :path, :http_method, :format, :headers, :parameters, :responses
-
+    attr_accessor :namespace, :action, :path, :http_method, :format, :headers, :parameters, :responses
 
     # TODO: update this method to provide better id that is used as part of filename
     def id
-      self.name.gsub(" ", "_")
+      [self.namespace, self.action].reject { |v| v.nil? || v == "" }.join("/")
     end
 
     class << self

@@ -50,6 +50,11 @@ module ApiSketch::Generators
       @resource_template = ERB.new(File.read("#{self.templates_folder}/resource.html.erb"))
     end
 
+    # This is defined here because it is related for this type of generator only
+    def filename_for(resource)
+      resource.id.gsub("/", "_") + '.html'
+    end
+
     private
       def copy_assets
         # copy assets from template directory
@@ -59,12 +64,21 @@ module ApiSketch::Generators
       end
 
       def create_documentation_files
+        @generator = self
         copy_assets
         @resources = ApiSketch::Model::Resource.all
         @resources.each do |resource|
           @resource = resource
-          filename = File.join(self.documentation_dir, "#{@resource.id}.html")
+
+          filename = File.join(self.documentation_dir, filename_for(@resource))
           html_data = @resource_template.result(binding)
+
+          dir = File.dirname(filename)
+          unless File.directory?(dir)
+            puts_info("\t create directory: #{dir}")
+            FileUtils.mkdir_p(dir)
+          end
+
           puts_info("\t write: #{filename}")
           File.open(filename, 'w+') { |file| file.write(html_data) }
         end

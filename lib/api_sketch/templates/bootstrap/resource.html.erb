@@ -94,14 +94,14 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <% @resources.each do |resource| %>
-              <li class="<%= 'active' if resource.id == @resource.id %>"><a href="<%= resource.id + '.html' %>"><%= resource.name %></a></li>
+              <li class="<%= 'active' if resource.id == @resource.id %>"><a href="<%= @generator.filename_for(resource) %>"><%= resource.name %></a></li>
             <% end %>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header"><%= @resource.name %></h1>
           <div class="panel panel-default">
-            <div class="panel-heading">Group: <%= @resource.group.join(" -> ") %></div>
+            <div class="panel-heading">ID: <%= @resource.id %></div>
             <div class="panel-body"><%= @resource.description %>
             </div>
           </div>
