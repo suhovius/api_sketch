@@ -20,6 +20,8 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'mixlib-cli'
   spec.add_dependency 'mixlib-config'
+  spec.add_dependency 'rack'
+  spec.add_dependency 'rack-contrib'
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake"

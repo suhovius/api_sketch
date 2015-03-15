@@ -31,7 +31,7 @@ class ApiSketch::ResponseRenderer
         value =  if [:array, :document].include?(param.data_type) && param.content
           render_content(param.content, param.data_type)
         else
-          param.example_value || param.example_value_default
+          param.example_value(true)
         end
 
         case placeholder_type

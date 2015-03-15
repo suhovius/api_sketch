@@ -22,8 +22,11 @@ module ApiSketch::Model
   class Attribute < ApiSketch::Model::Base
     attr_accessor :data_type, :value, :example, :required, :default, :content
 
-    def example_value
-      self.example.respond_to?(:call) ? self.example.call : self.example
+    def example_value(defaults_allowed=false)
+      value = self.example
+      value ||= example_value_default if defaults_allowed
+
+      value.respond_to?(:call) ? value.call : value
     end
 
     # TODO: These default values should be configurable via DSL

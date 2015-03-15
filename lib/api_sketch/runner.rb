@@ -30,11 +30,17 @@ class ApiSketch::Runner
     :description  => 'Generate documentation from provided definitions',
     :boolean      => true
 
-  option :stub_server,
+  option :examples_server,
     :short        => '-s',
-    :long         => '--short',
-    :description  => 'Run api stubs server (This option is under developent)',
+    :long         => '--server',
+    :description  => 'Run api examples server',
     :boolean      => true
+
+  option :examples_server_port,
+    :short        => '-p PORT',
+    :long         => '--port PORT',
+    :description  => 'Run api examples server port (Default is 3127)',
+    :default      => 3127
 
   option :debug,
     :short        => '-d',
@@ -59,9 +65,16 @@ class ApiSketch::Runner
       ApiSketch::Generators::Bootstrap.new(config).generate!
     end
 
-    if config[:stub_server]
-      # TODO: Run rack server here
-      #       This rack server should serve api request stubs
+    if config[:examples_server]
+      ::ApiSketch::DataLoadContainer.load_definitions!(config[:definitions_dir])
+
+      builder = Rack::Builder.new do
+        use ::Rack::PostBodyContentTypeParser
+        use ::Rack::NestedParams
+        run ::ApiSketch::ExamplesServer
+      end
+
+      Rack::Handler::WEBrick.run builder, :Port => config[:examples_server_port]
     end
   end
 
