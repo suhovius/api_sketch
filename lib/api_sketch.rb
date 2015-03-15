@@ -1,5 +1,6 @@
 require "api_sketch/version"
 
+require 'json'
 require 'erb'
 require 'fileutils'
 
@@ -11,5 +12,6 @@ module ApiSketch
   require "api_sketch/generators"
   require "api_sketch/helpers"
   require "api_sketch/config"
+  require "api_sketch/renderers"
   require "api_sketch/runner"
 end

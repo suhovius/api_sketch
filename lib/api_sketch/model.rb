@@ -26,6 +26,19 @@ module ApiSketch::Model
       self.example.respond_to?(:call) ? self.example.call : self.example
     end
 
+    # TODO: These default values should be configurable via DSL
+    #       Some logic to defer value example from key name, - email from key with email part inside, etc.
+    def example_value_default
+      {
+        integer:   lambda { rand(1000) + 1 },
+        string:    lambda { "random_string_#{('A'..'Z').to_a.shuffle.first(8).join}" },
+        float:     lambda { rand(100) + rand(100) * 0.01 },
+        boolean:   lambda { [true, false].sample },
+        datetime:  lambda { Time.now.strftime("%d-%m-%Y %H:%M:%S") },
+        timestamp: lambda { Time.now.to_i }
+      }[data_type]
+    end
+
     def to_hash
       {
         data_type: self.data_type,
@@ -175,7 +188,7 @@ module ApiSketch::Model
   class Response < ApiSketch::Model::Base
     attr_accessor :http_status, :parameters, :format, :headers
 
-     private
+    private
       def default_values_hash
         {
           format: "json",

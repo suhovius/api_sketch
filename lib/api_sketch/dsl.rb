@@ -165,7 +165,7 @@ module ApiSketch::DSL
       attributes[attribute_name] = get_complex_attribute(attribute_name, &block_value) if block_value
     end
 
-    # Assign resource grnamespaceoup
+    # Assign resource namespace
     attributes[:namespace] ||= block.source_location[0].gsub(ApiSketch::Config[:definitions_dir], "").gsub(".rb", "").split("/").reject { |ns| ns.nil? || ns == "" }.join("/")
 
     ::ApiSketch::Model::Resource.create(attributes)
