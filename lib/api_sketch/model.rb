@@ -138,6 +138,15 @@ module ApiSketch::Model
         @resources << resource
       end
 
+      def reset!
+        @resources = []
+      end
+
+      # TODO: Implement this method
+      # def reload!
+      # reset! and than load all examples again
+      # end
+
       def all
         @resources ||= []
       end

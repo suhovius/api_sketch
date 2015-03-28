@@ -85,8 +85,13 @@ describe ApiSketch::DSL do
 
   context "resource" do
     before do
+      # Ensure that we have empty resources set for each test
+      ApiSketch::Model::Resource.reset!
+
       @block = Proc.new do
         resource "API endpoint name" do
+          action "show"
+          namespace "endpoints"
           description "API endpoint description"
           path "/api/endpoint/link.json"
           http_method "PUT"

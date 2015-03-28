@@ -1,7 +1,8 @@
 # coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'api_sketch/version'
+# lib = File.expand_path('../lib', __FILE__)
+# $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require File.expand_path('../lib/api_sketch/version', __FILE__)
+#require 'api_sketch/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "api_sketch"
@@ -9,9 +10,12 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Alexey Suhoviy"]
   spec.email         = ["martinsilenn@gmail.com"]
   spec.summary       = %q{API Prototyping and API Documentation Tool}
-  spec.description   = %q{Gem provides DSL for API documentation generation and API request stubs}
-  spec.homepage      = ""
+  spec.description   = %q{Gem provides DSL for API documentation generation and API request examples server}
+
+  spec.homepage      = "" # TODO. Add github homepage link. Deploy to github
+
   spec.license       = "MIT"
+  spec.post_install_message = "Thanks for installing!"
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }

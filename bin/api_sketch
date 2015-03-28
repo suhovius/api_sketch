@@ -1,8 +1,12 @@
 #!/usr/bin/env ruby
 
-$LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
+# $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
 
-require 'rubygems'
-require 'api_sketch'
+begin
+  require 'api_sketch'
+rescue LoadError
+  require 'rubygems'
+  require 'api_sketch'
+end
 
 ApiSketch::Runner.new.run
