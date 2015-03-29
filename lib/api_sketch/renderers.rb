@@ -1,14 +1,14 @@
 class ApiSketch::ResponseRenderer
 
-  attr_reader :params
+  attr_reader :params, :container_type
 
-  def initialize(params)
+  def initialize(params, container_type)
     @params = params
+    @container_type = container_type
   end
 
   def to_h
-    placeholder_type = (params.count == 1 && params.first.data_type == :array) ? :array : :document
-    render_content(params, placeholder_type)
+    render_content(params, container_type)
   end
 
   def to_json

@@ -24,7 +24,7 @@ class ApiSketch::ExamplesServer
           response['Content-Type'] = 'application/json'
 
           response.status = Rack::Utils.status_code(api_response.http_status)
-          response.write(ApiSketch::ResponseRenderer.new(api_response.parameters.body).to_json)
+          response.write(ApiSketch::ResponseRenderer.new(api_response.parameters.body, api_response.parameters.body_container_type).to_json)
         end
       else
         api_sketch_message("No any responses defined for this resource", 404)

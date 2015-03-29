@@ -197,7 +197,7 @@
                   <div class="panel panel-default">
                     <div class="panel-heading"><%= captions[index] %></div>
                     <div class="panel-body">
-                      <% placeholder_type =  @resource.parameters.send("#{pl}_container_type") %>
+                      <% placeholder_type = response.parameters.send("#{pl}_container_type") %>
                       <%= render_content(params, placeholder_type) %>
                     </div>
                   </div>
