@@ -144,7 +144,7 @@ module ApiSketch::Model
 
       def reload!(definitions_dir = ApiSketch::Config[:definitions_dir])
         self.reset!
-        container = ApiSketch::DataLoadContainer.new(self.definitions_dir)
+        container = ApiSketch::DataLoadContainer.new(definitions_dir)
         container.init!
       end
 
