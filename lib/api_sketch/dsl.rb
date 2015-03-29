@@ -204,7 +204,7 @@ class ApiSketch::DSL
         ::ApiSketch::DSL::Headers.new(&block).to_a
       when :parameters
         params = ::ApiSketch::DSL::Parameters.new(&block).to_h
-        ::ApiSketch::Model::Parameters.new(query: params[:query], body: params[:body])
+        ::ApiSketch::Model::Parameters.new(params)
       when :responses
         ::ApiSketch::DSL::Responses.new(&block).to_a
       end

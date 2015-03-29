@@ -1,6 +1,8 @@
 <%
 
   def render_content(items, placeholder_type)
+    return unless [:array, :document].include?(placeholder_type)
+
     placeholder_brackets = {
       array: ["[", "]"],
       document: ["{", "}"]
@@ -156,6 +158,7 @@
             <div class="panel panel-default">
               <div class="panel-heading"><%= captions[index] %></div>
               <% if @resource.parameters && params = @resource.parameters.send(pl) %>
+                <% @resource.parameters %>
                 <div class="panel-body">
                   <% placeholder_type =  @resource.parameters.send("#{pl}_container_type") %>
                   <%= render_content(params, placeholder_type) %>
