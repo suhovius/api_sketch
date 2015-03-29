@@ -120,12 +120,12 @@ module ApiSketch::DSL
       }
     end
 
-    def query(&block)
-      @query += ::ApiSketch::DSL::Attributes.new(:root, &block).to_a
+    def query(container_type, &block)
+      @query += ::ApiSketch::DSL::Attributes.new(container_type, &block).to_a
     end
 
-    def body(&block)
-      @body += ::ApiSketch::DSL::Attributes.new(:root, &block).to_a
+    def body(container_type, &block)
+      @body += ::ApiSketch::DSL::Attributes.new(container_type, &block).to_a
     end
 
   end
