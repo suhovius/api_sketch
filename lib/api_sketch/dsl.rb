@@ -2,7 +2,7 @@ class ApiSketch::DSL
 
   COMPLEX_ATTRIBUTE_NAMES = [:headers, :parameters, :responses]
 
-  def initialize(definitions_dir)
+  def initialize(definitions_dir=ApiSketch::Config[:definitions_dir])
     @definitions_dir = definitions_dir
   end
 
