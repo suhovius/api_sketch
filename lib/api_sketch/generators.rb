@@ -36,8 +36,7 @@ module ApiSketch::Generators
 	    end
 
 	    def load_definitions
-	      container = ApiSketch::DataLoadContainer.new(self.definitions_dir)
-	      container.init!
+        ApiSketch::Model::Resource.reload!(self.definitions_dir)
 	    end
 
 	end

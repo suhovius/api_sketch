@@ -142,10 +142,11 @@ module ApiSketch::Model
         @resources = []
       end
 
-      # TODO: Implement this method
-      # def reload!
-      # reset! and than load all examples again
-      # end
+      def reload!(definitions_dir = ApiSketch::Config[:definitions_dir])
+        self.reset!
+        container = ApiSketch::DataLoadContainer.new(self.definitions_dir)
+        container.init!
+      end
 
       def all
         @resources ||= []

@@ -66,7 +66,7 @@ class ApiSketch::Runner
     end
 
     if config[:examples_server]
-      ::ApiSketch::DataLoadContainer.load_definitions!(config[:definitions_dir])
+      ::ApiSketch::Model::Resource.reload!(config[:definitions_dir])
 
       builder = Rack::Builder.new do
         use ::Rack::PostBodyContentTypeParser
