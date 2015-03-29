@@ -117,8 +117,6 @@ class ApiSketch::DSL
 
   class Parameters
 
-    attr_reader :query_container_type, :body_container_type
-
     def initialize(&block)
       @query = []
       @body = []
@@ -131,7 +129,9 @@ class ApiSketch::DSL
     def to_h
       {
         query: @query,
-        body: @body
+        body: @body,
+        query_container_type: @query_container_type,
+        body_container_type: @body_container_type
       }
     end
 
@@ -163,7 +163,7 @@ class ApiSketch::DSL
       attributes = ::ApiSketch::DSL::AttributeParser.new(:root, &block).to_h
       if attributes[:parameters]
         params = ::ApiSketch::DSL::Parameters.new(&attributes[:parameters]).to_h
-        attributes[:parameters] = ::ApiSketch::Model::Parameters.new(query: params[:query], body: params[:body])
+        attributes[:parameters] = ::ApiSketch::Model::Parameters.new(params)
       end
       @list << ::ApiSketch::Model::Response.new(attributes.merge(name: name))
     end

@@ -73,7 +73,7 @@ module ApiSketch::Model
 
 
   class Parameters < ApiSketch::Model::Base
-    attr_accessor :query, :body
+    attr_accessor :query, :body, :query_container_type, :body_container_type
 
     def initialize(attributes = {})
       super(attributes)
