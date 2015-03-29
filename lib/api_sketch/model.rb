@@ -142,10 +142,9 @@ module ApiSketch::Model
         @resources = []
       end
 
-      def reload!(definitions_dir = ApiSketch::Config[:definitions_dir])
+      def reload!(definitions_dir)
         self.reset!
-        container = ApiSketch::DataLoadContainer.new(definitions_dir)
-        container.init!
+        ApiSketch::DSL.new(definitions_dir).init!
       end
 
       def all

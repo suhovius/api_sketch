@@ -157,7 +157,7 @@
               <div class="panel-heading"><%= captions[index] %></div>
               <% if @resource.parameters && params = @resource.parameters.send(pl) %>
                 <div class="panel-body">
-                  <% placeholder_type = (params.count == 1 && params.first.data_type == :array) ? :array : :document %>
+                  <% placeholder_type =  @resource.parameters.send("#{pl}_container_type") %>
                   <%= render_content(params, placeholder_type) %>
                 </div>
               <% else %>
@@ -194,7 +194,7 @@
                   <div class="panel panel-default">
                     <div class="panel-heading"><%= captions[index] %></div>
                     <div class="panel-body">
-                      <% placeholder_type = (params.count == 1 && params.first.data_type == :array) ? :array : :document %>
+                      <% placeholder_type =  @resource.parameters.send("#{pl}_container_type") %>
                       <%= render_content(params, placeholder_type) %>
                     </div>
                   </div>

@@ -1,6 +1,17 @@
-module ApiSketch::DSL
+class ApiSketch::DSL
 
   COMPLEX_ATTRIBUTE_NAMES = [:headers, :parameters, :responses]
+
+  def initialize(definitions_dir)
+    @definitions_dir = definitions_dir
+  end
+
+  def init!
+    Dir.glob("#{@definitions_dir}/**/*.rb").each do |file_path|
+      puts_info("\t read: #{file_path}")
+      binding.eval(File.open(File.expand_path(file_path)).read, file_path)
+    end
+  end
 
   class AttributeParser
 
@@ -106,9 +117,13 @@ module ApiSketch::DSL
 
   class Parameters
 
+    attr_reader :query_container_type, :body_container_type
+
     def initialize(&block)
       @query = []
       @body = []
+      @query_container_type = nil
+      @body_container_type = nil
       define_singleton_method(:initialize_parameters_list, block)
       initialize_parameters_list
     end
@@ -121,10 +136,12 @@ module ApiSketch::DSL
     end
 
     def query(container_type, &block)
+      @query_container_type = container_type
       @query += ::ApiSketch::DSL::Attributes.new(container_type, &block).to_a
     end
 
     def body(container_type, &block)
+      @body_container_type = container_type
       @body += ::ApiSketch::DSL::Attributes.new(container_type, &block).to_a
     end
 
@@ -166,13 +183,17 @@ module ApiSketch::DSL
     end
 
     # Assign resource namespace
-    attributes[:namespace] ||= block.source_location[0].gsub(ApiSketch::Config[:definitions_dir], "").gsub(".rb", "").split("/").reject { |ns| ns.nil? || ns == "" }.join("/")
+    attributes[:namespace] ||= block.source_location[0].gsub(definitions_dir, "").gsub(".rb", "").split("/").reject { |ns| ns.nil? || ns == "" }.join("/")
 
     ::ApiSketch::Model::Resource.create(attributes)
   end
 
 
   private
+    def definitions_dir
+      @definitions_dir
+    end
+
     def get_attrs(name, &block)
       ::ApiSketch::DSL::AttributeParser.new(:root, &block).to_h.merge(name: name)
     end
