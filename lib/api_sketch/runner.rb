@@ -39,7 +39,7 @@ class ApiSketch::Runner
   option :examples_server_port,
     :short        => '-p PORT',
     :long         => '--port PORT',
-    :description  => 'Run api examples server port (Default is 3127)',
+    :description  => 'Api examples server port (Default is 3127)',
     :default      => 3127
 
   option :debug,
