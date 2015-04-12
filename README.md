@@ -1,14 +1,18 @@
 # Api Sketch
+------------
 
 api_sketch gem provides you with DSL to describe and create API documentation.
 
-### Three main parts include
+It consists of three main parts:
+
 1. API definitions DSL
 2. Documentation generator
 3. API example responses server
 
+---
 
-## Installation
+Installation
+------------
 
 Include the gem in your Gemfile:
 
@@ -20,12 +24,13 @@ Or install it yourself as:
 
     $ gem install api_sketch
 
-## Usage
+Usage
+-----
 
 Gem is bundled with the same named executable. It's supported options list is provided below.
 
 ```
-api_sketch -h
+$ api_sketch -h
 Usage: /bin/api_sketch (options)
     -d, --debug                      Run in verbose mode
     -i, --input DEFINITIONS          Path to the folder with api definitions (required)
@@ -39,14 +44,14 @@ Usage: /bin/api_sketch (options)
 
 ### Documentation generation
 
-Documentaion generation command example. Documentation is generated into documentation folder
+Documentaion generation command example:
 
 ```
 $ api_sketch -g -i definitions -o documentation
 ```
 ### API example responses server
 
-API example responses server start command example
+Start API example responses server command example:
 
 ```
 $ api_sketch -s -i definitions
@@ -54,10 +59,10 @@ $ api_sketch -s -i definitions
 [2015-04-12 20:46:19] INFO  ruby 2.1.2 (2014-05-08) [x86_64-darwin13.0]
 [2015-04-12 20:46:19] INFO  WEBrick::HTTPServer#start: pid=5874 port=3127
 ```
-After this server is stared response examples may be accessed with this kind url `api_sketch_response_id` and `api_sketch_response_context` parameters are used to determine which response should be returned.
+After this server was started response example may be accessed with this kind url:
 
 ```
-http://localhost:3127/.json?api_sketch_response_id=users/update&api_sketch_response_context=Success
+http://localhost:3127/.json?api_sketch_resource_id=users/update&api_sketch_response_context=Success
 ```
 
 ```json
@@ -81,9 +86,14 @@ http://localhost:3127/.json?api_sketch_response_id=users/update&api_sketch_respo
 }
 ```
 
-## Definitions
+`api_sketch_resource_id` and `api_sketch_response_context` parameters are used to determine which response should be returned.
 
-Api definitions should be into directory with similar to this example. Directory may have only one file or many with groups of resources. Resurce namespace is derived from this hierachical stucrure.
+Definitions
+-----------
+
+##### Folder
+
+API definitions files should be placed into directory with structure similar to `definitions` folder in this example. Directory may have only one file or many files and folders with files. Resurce's `namespace` is derived from this hierachical stucture.
 
 ```
 definitions
@@ -92,16 +102,35 @@ definitions
 │   └── points.rb
 └── users.rb
 ```
+##### DSL
 
 Definitions DSL is writen in ruby. It consists of special keywords that are used to describe API endpoint resource's request options, url, and list of possible responses.
 
-Here is dummy example of resource definition that includes most part of DSL syntax.
+Here is dummy example of `resource` definition that includes most part of DSL syntax.
+
+`action` and `namespace` both form resource ID that should be unique. For this current case resource ID would be `users/update`.
+
+If `namespace` is omitted than it would be derived from folders structure and file name where this defintion is placed in. So, for example if definition is placed inside `users/points.rb` than it's namespace is `users/points`.
+
+DSL provides `path`, `http_method`, `headers`, `parameters` keywords for request data descrioption. Parameters could be placed at `query` and `body` containers. Both of them could have `:array` or `:document` structure.
+
+Supported attribute types are: `integer`, `string`, `float`, `boolean`, `datetime`, `timestamp`, `document`, `array`
+
+Each attribute should have name, could have `description`, `example` value, could be `required`.
+
+`example` keyword accepts callable blocks or just some simple values. Callable blocks may give new value each time `example_value` is requested.
+
+Array and query attribute types have `content` keyword where their contents are placed in.
+
+Each `resource` could have many `responses` with different `context`. For example succesful one and few with different errors. Especially for `responses` it is better to provide detailed `example` values as they could be used as responses by examples server.
+
+Resource `parameters` section's syntax it the same as for `resource` request parameters.
 
 ```ruby
 resource "Update user profile" do # Resource name
-  action "update" #   action and namespace both form resource ID that should be unique. For this current case resource ID would be "users/update"
-  namespace "users" # if this value is omitted that it would be derived from folders structure and file name where this defintion is placed in. So, for example if definition is placed inside users/points.rb than it's namespace is users/points.
-  description "Authenticated user could update his profile fields and password" # Resource description
+  action "update"
+  namespace "users"
+  description "Authenticated user could update his profile fields and password"
   path "/api/users/me.json" # Server path where this endpoint would be processed
   http_method "PUT" # http request method
   format "json" # response format
@@ -110,7 +139,7 @@ resource "Update user profile" do # Resource name
     add "Authorization" do
       value "Token token=:token_value"
       description ":token_value - is an authorization token value"
-      example { (:A..:z).to_a.shuffle[0,16].join } # example keyword accepts callable blocks or just some simple values. Callable blocks may give new value each time examples value is requested.
+      example { (:A..:z).to_a.shuffle[0,16].join }
       required true
     end
 
@@ -171,7 +200,7 @@ resource "Update user profile" do # Resource name
       array "place_ids" do
         description "user's places ids"
         required false
-        content do # array and query have special keyword for their contents
+        content do
           integer do
             description "hello number"
           end
@@ -250,13 +279,10 @@ resource "Update user profile" do # Resource name
     end
   end
 
-  # Each resource could have many responses. For exampe normal and with error
-  # Especially for responses it is better to provide detailed example values as they could be used for responses examples server
   responses do
-    context "Success" do # context means response name
+    context "Success" do
       http_status :ok # 200
 
-	   # parameters section's syntax it the same as for resource request parameters
       parameters do
         body :document do
           document "user" do
@@ -333,27 +359,30 @@ end
 
 For more detailed DSL features examples check DSL test files at spec folder.
 
-## TODO
+TODO
+----
 
-- Clean genrated documentation html template css, javascripts
+- Clean genrated documentation html template css, javascripts. Remove useless classes, html, etc.
 - Add local javascript search feature at generated html docs
 - Add API index page similar to [Foursquare API docs](https://developer.foursquare.com/docs/)
-- Improve documentation add more examples for shared blocks
-- Add more templates for example PDF, curl, some other html styles, etc. It should be configurable as api_sketch command option. This might be made as some separate extensions gem. There also could be generators for some specific framework api controllers structure.
-- Put all generated pages data into docs directory. Left assets directory outside since it may clash with generated files/folders names.
-- Add some huge amout to array example responses (each type of elements should be placed to response multiple times)
-- API examples server also should support endpoint search by request path & http method (this is more natural to reality method)
+- Improve documentation, add more examples
+- Add more documentation templates. For example PDF, curl, some other html styles, etc. It should be configurable as api_sketch command line option. This might be made as some separate extensions gem. There also could be generators for some specific framework api controllers structure scaffold generators.
+- Put all generated pages data into `{output_folder}/docs` directory. Left `assets` directory outside since it may clash with generated files/folders names.
+- API examples server also should support endpoint search by request `path` & `http_method` like normal api server does.
 - Deal with query body at responses (For example redirects may have query body)
-- Validate HTTP method with path and action unique composition
-- Add other request/response types like plaintext, etc, xml (should be supprted at generatro and server)
+- Validate HTTP method with path, http method and action unique composition
+- Add other request/response types like plaintext, xml, etc (should be supprted both at generator and server)
 - Set project name somewhere in DSL or by definitions folder name (both options needed)
-- Add viewable html log for this api stubs application to let mobile developers see what data and how server receives
+- Add realtime viewable page with log for this api examples server application to let client side developers see what data they have sent and how server received it
 - Add more validations to models.
 - Add more specs and tests.
 - Add `shared_block "shared block name"` (definition keyword) search keyword by it's to blocks. Maybe `uses_shared_block "shared block name"`. Maybe shared blocks should be placed into special directory at definitions to be loaded before all examples
-- Add more complex examples autogeneration for example server. Derive values from key names. For example string "email" should have some email value as response example.
+- Add more complex example values autogeneration for API examples server. Derive values from key names. For example string "email" should have some email value as response example.
+- Add `api_sketch_response_array_elements_count` for responses server. It should generate responses with provided array elements counts. If array contains different type values than each type of these elements should be placed to response multiple times.
+- rDoc documentation for code.
 
-## Contributing
+Contributing
+------------
 
 1. Fork it ( https://github.com/suhovius/api_sketch/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
@@ -361,8 +390,15 @@ For more detailed DSL features examples check DSL test files at spec folder.
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
 
-## Inspirations
+Inspirations
+------------
 - [Calamum](https://github.com/malachheb/calamum)
 - [Apiary](http://apiary.io/blueprint)
 - [IO Docs](https://github.com/mashery/iodocs)
 - [Swagger](https://developers.helloreverb.com/swagger)
+
+
+License
+-------
+
+ApiSketch is free software, and may be redistributed under the terms specified in the MIT-LICENSE file.

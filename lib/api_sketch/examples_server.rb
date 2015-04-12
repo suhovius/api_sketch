@@ -36,8 +36,8 @@ class ApiSketch::ExamplesServer
 
   private
     def api_resource
-      @api_resource = if @request.params["api_sketch_response_id"]
-        ApiSketch::Model::Resource.find(@request.params["api_sketch_response_id"])
+      @api_resource = if @request.params["api_sketch_resource_id"]
+        ApiSketch::Model::Resource.find(@request.params["api_sketch_resource_id"])
       else
         ApiSketch::Model::Resource.all.find { |res| res.http_method == @request.request_method && res.path }
       end
