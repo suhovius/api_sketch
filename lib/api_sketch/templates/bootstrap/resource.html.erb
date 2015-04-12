@@ -179,7 +179,7 @@
 
               <div class="panel panel-default">
                 <div class="panel-heading">HTTP Status</div>
-                <div class="panel-body"><%= (Rack::Utils.status_code(response.http_status.downcase.to_sym).to_s + " " + response.http_status.to_s.gsub("_", " ")) if response.http_status %></div>
+                <div class="panel-body"><%= (Rack::Utils.status_code(response.http_status.downcase.to_sym).to_s + " " + response.http_status.to_s.gsub("_", " ").upcase) if response.http_status %></div>
               </div>
 
               <div class="panel panel-default">
