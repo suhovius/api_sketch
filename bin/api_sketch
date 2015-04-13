@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-# $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
-
 begin
   require 'api_sketch'
 rescue LoadError

@@ -48,6 +48,11 @@ class ApiSketch::Runner
     :description  => 'Run in verbose mode',
     :boolean      => true
 
+  option :project_name,
+    :short        => '-n',
+    :long         => '--name PROJECT_NAME',
+    :description  => 'Name of the project. (Default is derived from DEFINITIONS folder name)'
+
   option :version,
     :short        => '-v',
     :long         => '--version',
@@ -58,10 +63,16 @@ class ApiSketch::Runner
 
   def run
     parse_options
+
+    if config[:generate] || config[:examples_server]
+      raise ApiSketch::Error, "Definitions parameter should be a directory" unless File.directory?(config[:definitions_dir])
+      config[:project_name] = File.basename(config[:definitions_dir]).gsub("_", " ").gsub(/\w+/, &:capitalize) if (config[:project_name].nil? || config[:project_name].empty?)
+      puts config[:project_name]
+    end
+
     ::ApiSketch::Config.merge!(config)
 
     if config[:generate]
-      raise ApiSketch::Error, "Definitions parameter should be a directory" unless File.directory?(config[:definitions_dir])
       ApiSketch::Generators::Bootstrap.new(config).generate!
     end
 

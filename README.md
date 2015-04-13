@@ -38,6 +38,7 @@ Usage: /bin/api_sketch (options)
     -s, --server                     Run api examples server
     -p, --port PORT                  Api examples server port (Default is 3127)
     -g, --generate                   Generate documentation from provided definitions
+    -n, --name PROJECT_NAME          Name of the project. (Default is derived from DEFINITIONS folder name)
     -v, --version                    Show version number
     -h, --help                       Show this help
 ```
@@ -93,7 +94,7 @@ Definitions
 
 ##### Folder
 
-API definitions files should be placed into directory with structure similar to `definitions` folder in this example. Directory may have only one file or many files and folders with files. Resurce's `namespace` is derived from this hierachical stucture.
+API definitions files should be placed into directory with structure similar to `definitions` folder in this example. Directory may have only one file or many files and folders with files. Resurce's `namespace` is derived from this hierachical structure.
 
 ```
 definitions
@@ -112,7 +113,7 @@ Here is dummy example of `resource` definition that includes most part of DSL sy
 
 If `namespace` is omitted than it would be derived from folders structure and file name where this defintion is placed in. So, for example if definition is placed inside `users/points.rb` than it's namespace is `users/points`.
 
-DSL provides `path`, `http_method`, `headers`, `parameters` keywords for request data descrioption. Parameters could be placed at `query` and `body` containers. Both of them could have `:array` or `:document` structure.
+DSL provides `path`, `http_method`, `headers`, `parameters` keywords for request data definition. Parameters could be placed at `query` and `body` containers. Both of them could have `:array` or `:document` structure.
 
 Supported attribute types are: `integer`, `string`, `float`, `boolean`, `datetime`, `timestamp`, `document`, `array`
 
@@ -372,7 +373,6 @@ TODO
 - Deal with query body at responses (For example redirects may have query body)
 - Validate HTTP method with path, http method and action unique composition
 - Add other request/response types like plaintext, xml, etc (should be supprted both at generator and server)
-- Set project name somewhere in DSL or by definitions folder name (both options needed)
 - Add realtime viewable page with log for this api examples server application to let client side developers see what data they have sent and how server received it
 - Add more validations to models.
 - Add more specs and tests.
