@@ -45,7 +45,7 @@
 
 <%
   # Relative reference urls nesting
-  nesting_path_prefix = "./" + "../" * File.dirname(@generator.filename_for(resource)).split("/").count
+  nesting_path_prefix = "./../" + "../" * File.dirname(@generator.filename_for(resource)).split("/").count
 %>
 
 <!DOCTYPE html>
@@ -95,7 +95,7 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <% @resources.each do |resource| %>
-              <li class="<%= 'active' if resource.id == @resource.id %>"><a href="<%= nesting_path_prefix %><%= @generator.filename_for(resource) %>"><%= resource.name %></a></li>
+              <li class="<%= 'active' if resource.id == @resource.id %>"><a href="<%= nesting_path_prefix %>docs/<%= @generator.filename_for(resource) %>"><%= resource.name %></a></li>
             <% end %>
           </ul>
         </div>

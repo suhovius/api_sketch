@@ -1,6 +1,8 @@
 # Api Sketch
-------------
 
+[![Gem Version](https://badge.fury.io/rb/api_sketch.svg)](http://badge.fury.io/rb/api_sketch)
+
+---
 api_sketch gem provides you with DSL to describe and create API documentation.
 
 It consists of three main parts:
@@ -368,7 +370,6 @@ TODO
 - Add API index page similar to [Foursquare API docs](https://developer.foursquare.com/docs/)
 - Improve documentation, add more examples
 - Add more documentation templates. For example PDF, curl, some other html styles, etc. It should be configurable as api_sketch command line option. This might be made as some separate extensions gem. There also could be generators for some specific framework api controllers structure scaffold generators.
-- Put all generated pages data into `{output_folder}/docs` directory. Left `assets` directory outside since it may clash with generated files/folders names.
 - API examples server also should support endpoint search by request `path` & `http_method` like normal api server does.
 - Deal with query body at responses (For example redirects may have query body)
 - Validate HTTP method with path, http method and action unique composition

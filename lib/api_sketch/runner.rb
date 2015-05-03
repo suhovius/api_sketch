@@ -67,7 +67,6 @@ class ApiSketch::Runner
     if config[:generate] || config[:examples_server]
       raise ApiSketch::Error, "Definitions parameter should be a directory" unless File.directory?(config[:definitions_dir])
       config[:project_name] = File.basename(config[:definitions_dir]).gsub("_", " ").gsub(/\w+/, &:capitalize) if (config[:project_name].nil? || config[:project_name].empty?)
-      puts config[:project_name]
     end
 
     ::ApiSketch::Config.merge!(config)
