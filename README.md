@@ -65,7 +65,7 @@ $ api_sketch -s -i definitions
 After this server was started response example may be accessed with this kind url:
 
 ```
-http://localhost:3127/.json?api_sketch_resource_id=users/update&api_sketch_response_context=Success
+http://localhost:3127/.json?api_sketch_resource_id=users/update&api_sketch_response_context=Success&api_sketch_response_array_elements_count=1
 ```
 
 ```json
@@ -89,7 +89,16 @@ http://localhost:3127/.json?api_sketch_resource_id=users/update&api_sketch_respo
 }
 ```
 
-`api_sketch_resource_id` and `api_sketch_response_context` parameters are used to determine which response should be returned.
+`api_sketch_resource_id` and `api_sketch_response_context` parameters are used to determine which response should be returned. If `api_sketch_response_context` is omitted than it would take first available response.
+
+`api_sketch_response_array_elements_count` - optional parameter that determines amount of elements in generated response arrays. Default value is 3.
+
+Also server supports finding responses by http request method and path.
+
+```
+curl -H "Accept: application/json" -H "Content-type: application/json" -X PUT -d '{ "api_sketch_response_context" : "Success", "api_sketch_response_array_elements_count" : 3}' http://localhost:3127/api/users/me.json
+{"user":{"id":509,"email":"user63@email.com", ... }}
+```
 
 Definitions
 -----------
@@ -377,7 +386,6 @@ TODO
 - Add more specs and tests.
 - Add `shared_block "shared block name"` (definition keyword) search keyword by it's to blocks. Maybe `uses_shared_block "shared block name"`. Maybe shared blocks should be placed into special directory at definitions to be loaded before all examples
 - Add more complex example values autogeneration for API examples server. Derive values from key names. For example string "email" should have some email value as response example.
-- Add `api_sketch_response_array_elements_count` for responses server. It should generate responses with provided array elements counts. If array contains different type values than each type of these elements should be placed to response multiple times.
 - rDoc documentation for code.
 
 Contributing

@@ -1,10 +1,11 @@
 class ApiSketch::ResponseRenderer
 
-  attr_reader :params, :container_type
+  attr_reader :params, :container_type, :elements_count
 
-  def initialize(params, container_type)
-    @params = params
+  def initialize(params, container_type, elements_count)
+    @params = params || {}
     @container_type = container_type
+    @elements_count = elements_count > 0 ? elements_count : 3
   end
 
   def to_h
@@ -28,7 +29,10 @@ class ApiSketch::ResponseRenderer
       end
 
       items.each do |param, index|
-        value =  if [:array, :document].include?(param.data_type) && param.content
+        value = if param.data_type == :array && param.content
+          # Some crazy tricks to get 'elements_count' random elements
+          elements_count.times.inject([]) { |a, _| a += render_content(param.content, param.data_type) }
+        elsif param.data_type == :document && param.content
           render_content(param.content, param.data_type)
         else
           param.example_value(true)
@@ -36,7 +40,11 @@ class ApiSketch::ResponseRenderer
 
         case placeholder_type
         when :array
-          placeholder << value
+          if param.data_type == :array && param.content
+            placeholder += value
+          else
+            placeholder << value
+          end
         when :document
           placeholder[param.name] = value
         end
