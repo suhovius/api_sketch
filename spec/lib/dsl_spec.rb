@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe ApiSketch::DSL do
   context "document" do
-  	context "when all data has key names" do
+    context "when all data has key names" do
       before do
         @block = lambda do
           document do
@@ -14,7 +14,7 @@ describe ApiSketch::DSL do
         end
       end
 
-  		it "should successfully create objects" do
+      it "should successfully create objects" do
         attributes = ApiSketch::DSL::Attributes.new(:array, &@block).to_a
         attribute = attributes.first
         expect(attribute.data_type).to eql :document
@@ -22,7 +22,7 @@ describe ApiSketch::DSL do
         expect(string_key.data_type).to eql :string
         expect(string_key.name).to eql "test_key"
       end
-  	end
+    end
 
     context "when data doesn't have key name" do
       before do
@@ -90,6 +90,78 @@ describe ApiSketch::DSL do
     end
 
     context "incorrect data" do
+      context "request HTTP method presence validation" do
+        before do
+          @invalid_block = Proc.new do
+            resource "API endpoint name" do
+              action "show"
+              namespace "endpoints"
+              path "/api/endpoint/link.json"
+              http_method ""
+            end
+          end
+        end
+
+        it "should return error" do
+          expect { ApiSketch::DSL.new.instance_eval(&@invalid_block) }.to raise_error(::ApiSketch::Error, "request http_method can't be blank")
+        end
+      end
+
+      context "request path method presence validation" do
+        before do
+          @invalid_block = Proc.new do
+            resource "API endpoint name" do
+              action "show"
+              namespace "endpoints"
+              http_method "GET"
+            end
+          end
+        end
+
+        it "should return error" do
+          expect { ApiSketch::DSL.new.instance_eval(&@invalid_block) }.to raise_error(::ApiSketch::Error, "request path can't be blank")
+        end
+      end
+
+      context "Combination of http_method and path is not unique" do
+        before do
+          @block = Proc.new do
+            resource "API endpoint name" do
+              action "show"
+              namespace "endpoints"
+              path "/api/endpoint/link.json"
+              http_method "GET"
+            end
+          end
+
+          @other_block = Proc.new do
+            resource "Create API endpoint name" do
+              action "create"
+              namespace "endpoints"
+              path "/api/endpoint/link.json"
+              http_method "POST"
+            end
+          end
+
+
+          @invalid_block = Proc.new do
+            resource "API some other endpoint name" do
+              action "other_show"
+              namespace "endpoints"
+              path "/api/endpoint/link.json"
+              http_method "GET"
+            end
+          end
+        end
+
+        it "should return error" do
+          ApiSketch::DSL.new.instance_eval(&@block)
+          ApiSketch::DSL.new.instance_eval(&@other_block)
+          expect { ApiSketch::DSL.new.instance_eval(&@invalid_block) }.to raise_error(::ApiSketch::Error, "Route 'GET /api/endpoint/link.json' should be unique")
+        end
+
+      end
+
       context "empty key name at root document" do
         before do
           @block = Proc.new do

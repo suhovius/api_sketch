@@ -370,9 +370,7 @@ TODO
 - Add API index page similar to [Foursquare API docs](https://developer.foursquare.com/docs/)
 - Improve documentation, add more examples
 - Add more documentation templates. For example PDF, curl, some other html styles, etc. It should be configurable as api_sketch command line option. This might be made as some separate extensions gem. There also could be generators for some specific framework api controllers structure scaffold generators.
-- API examples server also should support endpoint search by request `path` & `http_method` like normal api server does.
 - Deal with query body at responses (For example redirects may have query body)
-- Validate HTTP method with path, http method and action unique composition
 - Add other request/response types like plaintext, xml, etc (should be supprted both at generator and server)
 - Add realtime viewable page with log for this api examples server application to let client side developers see what data they have sent and how server received it
 - Add more validations to models.

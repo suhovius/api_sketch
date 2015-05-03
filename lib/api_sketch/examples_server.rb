@@ -27,7 +27,7 @@ class ApiSketch::ExamplesServer
           response.write(ApiSketch::ResponseRenderer.new(api_response.parameters.body, api_response.parameters.body_container_type).to_json)
         end
       else
-        api_sketch_message("No any responses defined for this resource", 404)
+        api_sketch_message("No any responses defined for this resource and context", 404)
       end
     else
       api_sketch_message("Resource is not Found", 404)
@@ -39,7 +39,7 @@ class ApiSketch::ExamplesServer
       @api_resource = if @request.params["api_sketch_resource_id"]
         ApiSketch::Model::Resource.find(@request.params["api_sketch_resource_id"])
       else
-        ApiSketch::Model::Resource.all.find { |res| res.http_method == @request.request_method && res.path }
+        ApiSketch::Model::Resource.find_by_http_method_and_path(@request.request_method, @request.path)
       end
     end
 
