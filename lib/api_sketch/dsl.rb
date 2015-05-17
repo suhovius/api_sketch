@@ -13,7 +13,16 @@ class ApiSketch::DSL
     end
   end
 
-  class AttributeParser
+  # All DSL clases should inherit this Base class
+  class Base
+
+    def use_shared_block(name)
+      self.instance_eval(&::ApiSketch::Model::SharedBlock.find(name))
+    end
+
+  end
+
+  class AttributeParser < ApiSketch::DSL::Base
 
     def initialize(container_type, &block)
       @attribute_values = {}
@@ -34,7 +43,7 @@ class ApiSketch::DSL
   end
 
 
-  class Attributes
+  class Attributes < ApiSketch::DSL::Base
 
     TYPES = [:integer, :string, :float, :boolean, :datetime, :timestamp, :document, :array]
 
@@ -47,10 +56,6 @@ class ApiSketch::DSL
 
     def to_a
       @params
-    end
-
-    def shared(name)
-      self.instance_eval(&::ApiSketch::Model::SharedBlock.find(name))
     end
 
     TYPES.each do |type_name|
@@ -170,7 +175,7 @@ class ApiSketch::DSL
 
   end
 
-  def shared_block(name, block)
+  def shared_block(name, &block)
     ::ApiSketch::Model::SharedBlock.add(name, block)
   end
 

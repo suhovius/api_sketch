@@ -483,7 +483,7 @@ describe ApiSketch::DSL do
         @definition_block = definition
 
         @shared_block = Proc.new do
-          shared_block("short user data", definition)
+          shared_block("short user data", &definition)
         end
       end
 
@@ -501,7 +501,7 @@ describe ApiSketch::DSL do
                 string "test_key" do
                 end
 
-                shared "short user data"
+                use_shared_block "short user data"
               end
             end
           end
@@ -530,7 +530,7 @@ describe ApiSketch::DSL do
                 string "test_key" do
                 end
 
-                shared "non existing shared data"
+                use_shared_block "non existing shared data"
               end
             end
           end
@@ -543,4 +543,5 @@ describe ApiSketch::DSL do
 
     end
   end
+
 end
