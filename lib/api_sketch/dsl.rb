@@ -102,7 +102,7 @@ class ApiSketch::DSL
   end
 
 
-  class Headers
+  class Headers < ApiSketch::DSL::Base
 
     def initialize(&block)
       @list = []
@@ -120,7 +120,7 @@ class ApiSketch::DSL
 
   end
 
-  class Parameters
+  class Parameters < ApiSketch::DSL::Base
 
     def initialize(&block)
       @query = []
@@ -152,7 +152,7 @@ class ApiSketch::DSL
 
   end
 
-  class Responses
+  class Responses < ApiSketch::DSL::Base
 
     def initialize(&block)
       @list = []

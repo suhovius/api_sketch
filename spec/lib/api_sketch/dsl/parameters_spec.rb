@@ -1,9 +1,9 @@
 require "spec_helper"
 
-describe ApiSketch::DSL::AttributeParser do
+describe ApiSketch::DSL::Parameters do
 
   let(:simple_instance) {
-    described_class.new(:document, &(Proc.new {}) )
+    described_class.new( &(Proc.new {}) )
   }
 
   context "instance methods" do

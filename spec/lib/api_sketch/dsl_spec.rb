@@ -1,6 +1,7 @@
 require "spec_helper"
 
 describe ApiSketch::DSL do
+
   context "document" do
     context "when all data has key names" do
       before do
