@@ -1,21 +1,5 @@
 class ApiSketch::DSL
 
-  attr_reader :definitions_dir
-
-  COMPLEX_ATTRIBUTE_NAMES = [:headers, :parameters, :responses]
-
-  def initialize(definitions_dir=ApiSketch::Config[:definitions_dir])
-    @definitions_dir = definitions_dir
-  end
-
-  def init!
-    DefinitionsLoader.new(self).load!
-  end
-
-  def evaluate_file(file_path)
-    binding.eval(File.open(File.expand_path(file_path)).read, file_path)
-  end
-
   # All DSL clases should inherit this Base class
   class Base
 
@@ -44,7 +28,6 @@ class ApiSketch::DSL
     end
 
   end
-
 
   class Attributes < ApiSketch::DSL::Base
 
@@ -178,6 +161,29 @@ class ApiSketch::DSL
 
   end
 
+
+  # Main DSL class
+
+  attr_reader :definitions_dir
+
+  COMPLEX_ATTRIBUTE_NAMES = [:headers, :parameters, :responses]
+
+  def initialize(definitions_dir=ApiSketch::Config[:definitions_dir])
+    @definitions_dir = definitions_dir
+  end
+
+  def init!
+    if File.directory?(config_dir)
+      puts_info("Load configuration")
+      load_dir_files(config_dir)
+    end
+
+    if File.directory?(resources_dir)
+      puts_info("Load resources")
+      load_dir_files(resources_dir)
+    end
+  end
+
   def shared_block(name, &block)
     ::ApiSketch::Model::SharedBlock.add(name, block)
   end
@@ -191,11 +197,10 @@ class ApiSketch::DSL
     end
 
     # Assign resource namespace
-    attributes[:namespace] ||= block.source_location[0].gsub(definitions_dir, "").gsub(".rb", "").split("/").reject { |ns| ns.nil? || ns == "" }.join("/")
+    attributes[:namespace] ||= block.source_location[0].gsub(resources_dir, "").gsub(".rb", "").split("/").reject { |ns| ns.nil? || ns == "" }.join("/")
 
     ::ApiSketch::Model::Resource.create(attributes)
   end
-
 
   private
 
@@ -214,5 +219,23 @@ class ApiSketch::DSL
         ::ApiSketch::DSL::Responses.new(&block).to_a
       end
     end
+
+
+    # Definitions loading
+    def config_dir
+      "#{definitions_dir}/config"
+    end
+
+    def resources_dir
+      "#{definitions_dir}/resources"
+    end
+
+    def load_dir_files(dir)
+      Dir.glob("#{dir}/**/*.rb").each do |file_path|
+        puts_info("\t read: #{file_path}")
+        binding.eval(File.open(File.expand_path(file_path)).read, file_path)
+      end
+    end
+
 
 end
