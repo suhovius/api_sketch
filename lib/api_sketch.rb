@@ -8,6 +8,14 @@ require 'fileutils'
 
 module ApiSketch
   require "api_sketch/dsl"
+  require "api_sketch/dsl/base"
+  require "api_sketch/dsl/attribute_parser"
+  require "api_sketch/dsl/attributes"
+  require "api_sketch/dsl/complex_attribute_parser"
+  require "api_sketch/dsl/headers"
+  require "api_sketch/dsl/parameters"
+  require "api_sketch/dsl/responses"
+
   require "api_sketch/model"
   require "api_sketch/error"
   require "api_sketch/generators"
