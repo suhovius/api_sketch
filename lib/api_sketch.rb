@@ -7,6 +7,7 @@ require 'erb'
 require 'fileutils'
 
 module ApiSketch
+  require "api_sketch/definitions_loader"
   require "api_sketch/dsl"
   require "api_sketch/model"
   require "api_sketch/error"

@@ -143,6 +143,7 @@ module ApiSketch::Model
       end
 
       def reload!(definitions_dir)
+        ApiSketch::Model::SharedBlock.reset!
         self.reset!
         ApiSketch::DSL.new(definitions_dir).init!
       end
@@ -233,6 +234,10 @@ module ApiSketch::Model
     class << self
       def add(name, block)
         @list_hash[name] = block
+      end
+
+      def reset!
+        @list_hash = {}
       end
 
       def find(name)

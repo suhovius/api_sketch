@@ -109,10 +109,15 @@ API definitions files should be placed into directory with structure similar to 
 
 ```
 definitions
-├── places.rb
-├── users
-│   └── points.rb
-└── users.rb
+├── config
+│    └── initializers
+│         └── shared_blocks.rb
+│
+└── resources
+    ├── places.rb
+    ├── users
+    │   └── points.rb
+    └── users.rb
 ```
 ##### DSL
 
@@ -384,7 +389,6 @@ TODO
 - Add realtime viewable page with log for this api examples server application to let client side developers see what data they have sent and how server received it
 - Add more validations to models.
 - Add more specs and tests.
-- Add `shared_block "shared block name"` (definition keyword) search keyword by it's to blocks. Maybe `uses_shared_block "shared block name"`. Maybe shared blocks should be placed into special directory at definitions to be loaded before all examples
 - Add more complex example values autogeneration for API examples server. Derive values from key names. For example string "email" should have some email value as response example.
 - rDoc documentation for code.
 

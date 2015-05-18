@@ -1,5 +1,7 @@
 class ApiSketch::DSL
 
+  attr_reader :definitions_dir
+
   COMPLEX_ATTRIBUTE_NAMES = [:headers, :parameters, :responses]
 
   def initialize(definitions_dir=ApiSketch::Config[:definitions_dir])
@@ -7,10 +9,11 @@ class ApiSketch::DSL
   end
 
   def init!
-    Dir.glob("#{@definitions_dir}/**/*.rb").each do |file_path|
-      puts_info("\t read: #{file_path}")
-      binding.eval(File.open(File.expand_path(file_path)).read, file_path)
-    end
+    DefinitionsLoader.new(self).load!
+  end
+
+  def evaluate_file(file_path)
+    binding.eval(File.open(File.expand_path(file_path)).read, file_path)
   end
 
   # All DSL clases should inherit this Base class
@@ -195,9 +198,6 @@ class ApiSketch::DSL
 
 
   private
-    def definitions_dir
-      @definitions_dir
-    end
 
     def get_attrs(name, &block)
       ::ApiSketch::DSL::AttributeParser.new(:root, &block).to_h.merge(name: name)
