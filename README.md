@@ -107,6 +107,8 @@ Definitions
 
 API definitions files should be placed into directory with structure similar to `definitions` folder in this example. Directory may have only one file or many files and folders with files. Resurce's `namespace` is derived from this hierachical structure.
 
+`config` folder is loaded before `resources` folder. Some initial data as shared definition blocks may be placed at config folder.
+
 ```
 definitions
 ├── config
@@ -177,9 +179,7 @@ resource "Update user profile" do # Resource name
       integer "repeat_times" do
         description "times to repeat hello message"
       end
-    end
 
-    query :document do
       integer "page" do
         description "page number"
         required false
@@ -374,7 +374,57 @@ resource "Update user profile" do # Resource name
 end
 ```
 
-For more detailed DSL features examples check DSL test files at spec folder.
+For more detailed DSL features examples check DSL test files at `spec` and `examples` folders.
+
+#####DSL: Shared exmples
+
+This feature is designed to reduce definition duplications.
+Here is shared block definition example. It's defintion should be placed into `config` directory.
+
+```ruby
+shared_block "place fields" do
+  integer "id" do
+    description "Place database ID"
+  end
+
+  string "name" do
+    description "Place name"
+    example { ["Cafe", "Market", "Restaurant", "Parking", "Park", "Palace", "Stadium"].sample }
+  end
+
+  float "area" do
+    description "Place area in square meters"
+    example { rand(100) + rand.round(2) }
+  end
+end
+```
+
+Shared block usage example. Keyword `use_shared_block` is available at `headers`, `parameters`, `attributes` and `responses` definitions.
+
+```ruby
+resource "Get places list" do
+  action "index"
+  path "/api/places.json"
+  http_method "GET"
+  format "json"
+
+  responses do
+    context "Success" do
+      http_status :ok
+
+      parameters do
+        body :array do
+          document do
+            content do
+              use_shared_block "place fields"
+            end
+          end
+        end
+      end
+    end
+  end
+end
+```
 
 TODO
 ----
