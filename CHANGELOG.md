@@ -1,6 +1,7 @@
-# 0.1.2 / 2015-05-17
+# 0.1.2 / 2015-05-31
 
 - Add `shared_block "shared block name"` (definition keyword) search keyword by it's to blocks. Keyword `use_shared_block "shared block name"` is used to find and use previously definded block. Shared blocks are be placed into special directory 'config/shared' at input folder to be loaded before all examples.
+- Reorganize internal gem structure.
 
 # 0.1.1 / 2015-05-03
 
