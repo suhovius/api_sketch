@@ -7,6 +7,14 @@ class ApiSketch::Model::Parameters < ApiSketch::Model::Base
     self.body ||= []
   end
 
+  def wrapped_query
+    ApiSketch::Model::Attribute.new(data_type: self.query_container_type, content: self.query)
+  end
+
+  def wrapped_body
+    ApiSketch::Model::Attribute.new(data_type: self.body_container_type, content: self.body)
+  end
+
   def as_full_names
     fullname_params = self.class.new
     [:query, :body].each do |param_location|

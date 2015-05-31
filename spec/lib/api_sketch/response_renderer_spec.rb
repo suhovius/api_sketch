@@ -33,6 +33,41 @@ describe ApiSketch::ResponseRenderer do
     end
   }
 
+
+  let(:array_response) {
+    Proc.new do
+      resource "Array of documents" do
+        action "index"
+        namespace "simple_data"
+        path "/api/test_datas.json"
+        http_method "GET"
+        format "json"
+
+        responses do
+          context "Success" do
+            http_status :ok
+
+            parameters do
+              body :array do
+                document do
+                  description "some data"
+                  content do
+                    string "name" do
+                      example { "Test User #{rand(100)}" }
+                    end
+                    integer "id" do
+                      example { rand(100) + 1 }
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  }
+
   let(:resource_example_definition) {
     Proc.new do
       resource "Get test data" do
@@ -119,6 +154,21 @@ describe ApiSketch::ResponseRenderer do
         }
 
         expect(result).to eql expected_hash
+      end
+
+      context "array root response" do
+        it "should return proper elements amount at response array" do
+          ApiSketch::DSL.new.instance_eval(&array_response)
+          response = ApiSketch::Model::Resource.find("simple_data/index").responses.find { |rsp| rsp.name == "Success" }
+          size = 7
+          result = ApiSketch::ResponseRenderer.new([response.parameters.wrapped_body], response.parameters.body_container_type, size).to_h
+
+          expect(result.size).to eql size
+          result.each do |element|
+            expect(element["name"]).to be_instance_of(String)
+            expect(element["id"]).to be_kind_of(Numeric)
+          end
+        end
       end
     end
 
