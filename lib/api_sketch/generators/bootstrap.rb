@@ -48,6 +48,14 @@ module ApiSketch::Generators
           puts_info("\t write: #{filename}")
           File.open(filename, 'w+') { |file| file.write(html_data) }
         end
+
+        if @resources.count > 0
+          # Create index page
+          index_template = ERB.new(File.read("#{self.templates_folder}/index.html.erb"))
+          filename = File.join(docs_folder, "index.html")
+          puts_info("\t write: #{filename}")
+          File.open(filename, 'w+') { |file| file.write(index_template.result(binding)) }
+        end
       end
   end
 end

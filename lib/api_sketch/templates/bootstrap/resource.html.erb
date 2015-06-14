@@ -93,7 +93,8 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
+          <input id="search" type="text" class="form-control" placeholder="Search...">
+          <ul class="nav nav-sidebar hideseek-data">
             <% @resources.each do |resource| %>
               <li class="<%= 'active' if resource.id == @resource.id %>"><a href="<%= nesting_path_prefix %>docs/<%= @generator.filename_for(resource) %>"><%= resource.name %></a></li>
             <% end %>
@@ -206,10 +207,21 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="<%= nesting_path_prefix %>assets/javascripts/jquery-1.11.1/jquery.min.js"></script>
+    <script src="<%= nesting_path_prefix %>assets/javascripts/jquery-1.11.1.min.js"></script>
     <script src="<%= nesting_path_prefix %>assets/javascripts/bootstrap.min.js"></script>
-    <script src="<%= nesting_path_prefix %>assets/javascripts/docs.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="<%= nesting_path_prefix %>assets/javascripts/ie10-viewport-bug-workaround.js"></script>
+    <script src="<%= nesting_path_prefix %>assets/javascripts/jquery.hideseek.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+          $('#search').hideseek({
+            list: '.hideseek-data',
+            highlight: true,
+            nodata: 'No results found',
+            navigation: true
+          });
+      });
+    </script>
+
   </body>
 </html>

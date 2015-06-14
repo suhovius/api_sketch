@@ -1,0 +1,90 @@
+<%
+  # Relative reference urls nesting
+  nesting_path_prefix = "./../"
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="<%= nesting_path_prefix %>assets/images/favicon.ico">
+
+    <title><%= ApiSketch::Config[:project_name] %> API documentation</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="<%= nesting_path_prefix %>assets/stylesheets/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="<%= nesting_path_prefix %>assets/stylesheets/dashboard.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"><%= ApiSketch::Config[:project_name] %> API documentation</a>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <% @resources.each do |resource| %>
+              <li><a href="<%= nesting_path_prefix %>docs/<%= @generator.filename_for(resource) %>"><%= resource.name %></a></li>
+            <% end %>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">Index</h1>
+          <input id="search" type="text" class="form-control" placeholder="Search...">
+          <div id="hideseek-data">
+            There should be hierachical tree of resources and their actions with links
+            <% @resources.sort_by { |r| r.id }.each do |resource| %>
+              <span class="panel panel-default">
+                <div class="panel-heading"><%= resource.id.split("/").join(" ") %></div>
+                <div class="panel-body"><%= resource.description %>
+                </div>
+              </span>
+            <% end %>
+          </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="<%= nesting_path_prefix %>assets/javascripts/jquery-1.11.1.min.js"></script>
+    <script src="<%= nesting_path_prefix %>assets/javascripts/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="<%= nesting_path_prefix %>assets/javascripts/ie10-viewport-bug-workaround.js"></script>
+    <script src="<%= nesting_path_prefix %>assets/javascripts/jquery.hideseek.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+          $('#search').hideseek({
+            list: '.hideseek-data',
+            highlight: true
+          });
+      });
+    </script>
+  </body>
+</html>
