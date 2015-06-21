@@ -84,7 +84,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#"><%= ApiSketch::Config[:project_name] %> API documentation</a>
+          <a class="navbar-brand" href="<%= "#{nesting_path_prefix}docs/index.html" %>"><%= ApiSketch::Config[:project_name] %> API documentation</a>
         </div>
       </div>
     </div>
@@ -93,7 +93,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-          <input id="search" type="text" class="form-control" placeholder="Search...">
+          <input id="search" type="text" class="form-control search-input" placeholder="Search...">
           <ul class="nav nav-sidebar hideseek-data">
             <% @resources.each do |resource| %>
               <li class="<%= 'active' if resource.id == @resource.id %>"><a href="<%= nesting_path_prefix %>docs/<%= @generator.filename_for(resource) %>"><%= resource.name %></a></li>

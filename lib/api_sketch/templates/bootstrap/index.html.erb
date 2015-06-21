@@ -39,7 +39,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#"><%= ApiSketch::Config[:project_name] %> API documentation</a>
+          <a class="navbar-brand" href="<%= "#{nesting_path_prefix}docs/index.html" %>"><%= ApiSketch::Config[:project_name] %> API documentation</a>
         </div>
       </div>
     </div>
@@ -48,7 +48,8 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
+          <input id="search" type="text" class="form-control search-input" placeholder="Search...">
+          <ul class="nav nav-sidebar hideseek-data">
             <% @resources.each do |resource| %>
               <li><a href="<%= nesting_path_prefix %>docs/<%= @generator.filename_for(resource) %>"><%= resource.name %></a></li>
             <% end %>
@@ -56,15 +57,19 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header">Index</h1>
-          <input id="search" type="text" class="form-control" placeholder="Search...">
-          <div id="hideseek-data">
-            There should be hierachical tree of resources and their actions with links
+          <input id="search_endpoints" type="text" class="form-control search-input" placeholder="Search...">
+          <div id="endpoints">
             <% @resources.sort_by { |r| r.id }.each do |resource| %>
-              <span class="panel panel-default">
-                <div class="panel-heading"><%= resource.id.split("/").join(" ") %></div>
-                <div class="panel-body"><%= resource.description %>
+              <div class="panel panel-default">
+                <div class="panel-heading"><%= resource.name %></div>
+                <div class="panel-body">
+                  <%= "#{resource.http_method} #{resource.path}" %>
+                  <% if !(resource.description.nil? || resource.description.empty?) %>
+                    <br/>
+                    <%= resource.description %>
+                  <% end %>
                 </div>
-              </span>
+              </div>
             <% end %>
           </div>
         </div>
@@ -77,12 +82,27 @@
     <script src="<%= nesting_path_prefix %>assets/javascripts/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="<%= nesting_path_prefix %>assets/javascripts/ie10-viewport-bug-workaround.js"></script>
+    <script src="<%= nesting_path_prefix %>assets/javascripts/jquery.searcher.min.js"></script>
     <script src="<%= nesting_path_prefix %>assets/javascripts/jquery.hideseek.min.js"></script>
     <script type="text/javascript">
       $(document).ready(function() {
           $('#search').hideseek({
             list: '.hideseek-data',
-            highlight: true
+            highlight: true,
+            nodata: 'No results found',
+            navigation: true
+          });
+          $("#endpoints").searcher({
+              itemSelector: ".panel",
+              textSelector: "div",
+              inputSelector: "#search_endpoints",
+              toggle: function(item, containsText) {
+                  // use a typically jQuery effect instead of simply showing/hiding the item element
+                  if (containsText)
+                      $(item).fadeIn();
+                  else
+                      $(item).fadeOut();
+              }
           });
       });
     </script>
