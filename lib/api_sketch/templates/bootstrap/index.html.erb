@@ -61,7 +61,9 @@
           <div id="endpoints">
             <% @resources.sort_by { |r| r.id }.each do |resource| %>
               <div class="panel panel-default">
-                <div class="panel-heading"><%= resource.name %></div>
+                <div class="panel-heading">
+                  <a href="<%= nesting_path_prefix %>docs/<%= @generator.filename_for(resource) %>"><%= resource.name %></a>
+                </div>
                 <div class="panel-body">
                   <%= "#{resource.http_method} #{resource.path}" %>
                   <% if !(resource.description.nil? || resource.description.empty?) %>
