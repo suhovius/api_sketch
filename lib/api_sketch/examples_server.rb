@@ -25,7 +25,9 @@ class ApiSketch::ExamplesServer
 
           response.status = Rack::Utils.status_code(api_response.http_status)
 
-          response.write(ApiSketch::ResponseRenderer.new([api_response.parameters.wrapped_body], api_response.parameters.body_container_type, get_elements_count).to_json)
+          params_array = (api_response.parameters.body_container_type.to_s == "array") ? [api_response.parameters.wrapped_body] : api_response.parameters.body
+
+          response.write(ApiSketch::ResponseRenderer.new(params_array, api_response.parameters.body_container_type, get_elements_count).to_json)
         end
       else
         api_sketch_message("No any responses defined for this resource and context", 404)

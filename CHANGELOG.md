@@ -1,3 +1,6 @@
+# 0.1.4 / 2015-06-22
+- Fix issue with excessive document brackets at examples server
+
 # 0.1.3 / 2015-06-22
 - Add index page with search. Add search at sidebar.
 
