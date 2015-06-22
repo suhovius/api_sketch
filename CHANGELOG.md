@@ -1,5 +1,6 @@
 # 0.1.5 / 2015-06-23
 - Add links to index page.
+- Add sample_call keyword for CURL examples
 
 # 0.1.4 / 2015-06-22
 - Fix issue with excessive document brackets at examples server

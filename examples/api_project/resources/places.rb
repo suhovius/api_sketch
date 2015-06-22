@@ -63,6 +63,8 @@ resource "Create place" do
     end
   end
 
+  sample_call 'curl -v -H "Authorization: Token token=CFd6Sh_dCRT1DhwQQg9N" -H "Accept: application/json" -H "Content-type: application/json" -X POST -d \'{ "name" : "Cafe", "area" : "123.5" }\' http://:domain/api/places.json'
+
 end
 
 

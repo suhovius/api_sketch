@@ -201,6 +201,13 @@
               <% end %>
             </div>
           <% end %>
+
+          <% if !(@resource.sample_call.nil? || @resource.sample_call.empty?) %>
+            <div class="panel panel-default">
+              <div class="panel-heading">Sample Call</div>
+              <div class="panel-body"><%= @resource.sample_call %></div>
+            </div>
+          <% end %>
       </div>
     </div>
 

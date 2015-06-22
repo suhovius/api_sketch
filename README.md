@@ -145,6 +145,8 @@ Each `resource` could have many `responses` with different `context`. For exampl
 
 Resource `parameters` section's syntax it the same as for `resource` request parameters.
 
+Resource attribute `sample_call` is used to provide example request to this endpoint. You may put thare some CURL request commands or some any other text data.
+
 ```ruby
 resource "Update user profile" do # Resource name
   action "update"
@@ -371,6 +373,8 @@ resource "Update user profile" do # Resource name
       end
     end
   end
+  
+  sample_call 'curl -v -H "Authorization: Token token=CFd6Sh_dCRT1DhwQQg9N" -H "Accept: application/json" -H "Content-type: application/json" -X PUT -d \'{ "user" : { "email" : "user.test@mail.com", "password" : "test_password" } }\' http://:domain/api/users/me.json'
 end
 ```
 
