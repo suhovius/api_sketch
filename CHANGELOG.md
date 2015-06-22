@@ -1,5 +1,5 @@
 # 0.1.3 / 2015-06-22
-- Add index page with search
+- Add index page with search. Add search at sidebar.
 
 # 0.1.2 / 2015-05-31
 
