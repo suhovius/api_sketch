@@ -133,7 +133,7 @@ If `namespace` is omitted than it would be derived from folders structure and fi
 
 DSL provides `path`, `http_method`, `headers`, `parameters` keywords for request data definition. Parameters could be placed at `query` and `body` containers. Both of them could have `:array` or `:document` structure.
 
-Supported attribute types are: `integer`, `string`, `float`, `boolean`, `datetime`, `timestamp`, `document`, `array`
+Supported attribute types are: `integer`, `string`, `float`, `boolean`, `datetime`, `timestamp`, `document`, `array`, `file`
 
 Each attribute should have name, could have `description`, `example` value, could be `required`.
 
@@ -214,6 +214,10 @@ resource "Update user profile" do # Resource name
       timestamp "seconds" do
         description "seconds today"
         example { Time.now.to_i }
+      end
+
+      file "avatar" do
+        description "Avatar file"
       end
 
       array "place_ids" do

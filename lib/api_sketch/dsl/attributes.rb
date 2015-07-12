@@ -1,6 +1,6 @@
 class ApiSketch::DSL::Attributes < ApiSketch::DSL::Base
 
-  TYPES = [:integer, :string, :float, :boolean, :datetime, :timestamp, :document, :array]
+  TYPES = [:integer, :string, :float, :boolean, :datetime, :timestamp, :document, :array, :file]
 
   def initialize(container_type, &block)
     @container_type = container_type

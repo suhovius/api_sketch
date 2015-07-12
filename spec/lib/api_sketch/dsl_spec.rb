@@ -308,6 +308,10 @@ describe ApiSketch::DSL do
                         end
                       end
                     end
+
+                    file "avatar" do
+                      description "Avatar file"
+                    end
                   end
                 end
               end
@@ -435,6 +439,10 @@ describe ApiSketch::DSL do
         expect(document_content[0].description).to eql "user's email value"
         expect(document_content[1].data_type).to eql :document
         expect(document_content[1].name).to eql "stats"
+
+        expect(document_content[2].name).to eql "avatar"
+        expect(document_content[2].data_type).to eql :file
+        expect(document_content[2].description).to eql "Avatar file"
 
         inner_content = document_content[1].content
         expect(inner_content[0].name).to eql "login_at"

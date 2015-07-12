@@ -64,6 +64,10 @@ resource "Update user profile" do
         example { Time.now.to_i }
       end
 
+      file "avatar" do
+        description "Avatar file"
+      end
+
       array "place_ids" do
         description "user's places ids"
         required false
