@@ -1,3 +1,6 @@
+# 0.1.7 / 2016-09-11
+- Fix dev bug
+
 # 0.1.6 / 2016-09-11
 - Add multipart field (file)
 
