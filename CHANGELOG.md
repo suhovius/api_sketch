@@ -1,3 +1,6 @@
+# 0.1.6 / 2016-09-11
+- Add multipart field (file)
+
 # 0.1.5 / 2015-06-23
 - Add links to index page.
 - Add sample_call keyword for CURL examples
