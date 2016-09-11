@@ -1,6 +1,6 @@
 class ApiSketch::Model::Resource < ApiSketch::Model::Base
 
-  attr_accessor :namespace, :action, :path, :http_method, :format, :headers, :parameters, :responses, :sample_call
+  attr_accessor :namespace, :action, :path, :http_method, :format, :headers, :parameters, :responses, :sample_call, :sample_response
 
   # TODO: update this method to provide better id that is used as part of filename
   def id
