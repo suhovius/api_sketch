@@ -1,3 +1,6 @@
+# 0.1.8 / 2016-09-11
+- Add sample_response
+
 # 0.1.7 / 2016-09-11
 - Fix dev bug
 
